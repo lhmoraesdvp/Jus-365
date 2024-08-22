@@ -28,7 +28,8 @@ jobs:
         run: dotnet publish -c Release -o ./myapp
 
       - name: List contents of myapp directory
-        run: dir ./myapp
+        run: |
+          if (Test-Path ./myapp) { dir ./myapp } else { Write-Host "Directory './myapp' does not exist." }
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -50,7 +51,8 @@ jobs:
           name: .net-app
 
       - name: List contents of downloaded artifact
-        run: dir ./myapp
+        run: |
+          if (Test-Path ./myapp) { dir ./myapp } else { Write-Host "Directory './myapp' does not exist." }
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
