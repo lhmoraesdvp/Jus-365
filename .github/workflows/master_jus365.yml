@@ -13,9 +13,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Print Test Secret
+      - name: Check if TEST_SECRET is set
         run: |
-          echo "Test Secret: ${{ secrets.TEST_SECRET }}"
+          if [ -z "${{ secrets.TEST_SECRET }}" ]; then
+            echo "TEST_SECRET is not set."
+          else
+            echo "TEST_SECRET is set."
+          fi
+
+      - name: Check if DefaultConnection is set
+        run: |
+          if [ -z "${{ secrets.DefaultConnection }}" ]; then
+            echo "DefaultConnection is not set."
+          else
+            echo "DefaultConnection is set."
+          fi
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
@@ -27,10 +39,6 @@ jobs:
 
       - name: Install dotnet-ef tool
         run: dotnet tool install --global dotnet-ef
-
-      - name: Print Test Secret
-        run: |
-          echo "Test Secret:  ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}"
 
       - name: Apply Entity Framework Core Migrations
         env:
