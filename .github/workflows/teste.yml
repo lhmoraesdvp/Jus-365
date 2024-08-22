@@ -1,14 +1,19 @@
-name: Test Secret
+name: Verificar Secret
 
-on: [push]
+on:
+  push:
+    branches: [ main ]
 
 jobs:
-  test:
+  verify_secret:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Print Test Secret
-        run: echo "Test Secret: ${{ secrets.TEST_SECRET }}"
+      - uses: actions/checkout@v3
+      - name: Verificar existência do secret
+        run: |
+          echo "Verificando se o secret 'TEST_SECRET' existe..."
+          if [ -z "${{ secrets.TEST_SECRET }}" ]; then
+            echo "O secret 'TEST_SECRET' não existe."
+          else
+            echo "O secret 'TEST_SECRET' existe. Seu valor é: ${{ secrets.TEST_SECRET }}"
+          fi
