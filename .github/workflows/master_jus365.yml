@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and Deploy ASP.NET Core App to Azure Web App - jus365
 
 on:
@@ -27,13 +24,18 @@ jobs:
       - name: Install dotnet-ef tool
         run: dotnet tool install --global dotnet-ef
 
-      - name: Apply Entity Framework Core Migrations
+      - name: Debug Connection String
+        env:
+          CONNECTION_STRING: ${{ secrets.DefaultConnection }}
         run: |
-          dir 
-          dotnet ef database update --project D:\a\Jus-365\Jus-365\Jus365.csproj --context ApplicationDbContext
-          env:
+          echo "Connection String: ${CONNECTION_STRING:0:10}***"
+
+      - name: Apply Entity Framework Core Migrations
+        env:
           ASPNETCORE_ENVIRONMENT: 'Production'
-          ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
+          ConnectionStrings__DefaultConnection: "${{ secrets.DefaultConnection }}"
+        run: |
+          dotnet ef database update --project ./Jus365.csproj --context ApplicationDbContext
 
       - name: Publish with dotnet
         run: dotnet publish -c Release -o ./myapp
@@ -65,5 +67,3 @@ jobs:
           slot-name: 'production'
           package: .
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}
-
-      
