@@ -42,10 +42,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
+          
+      - name: List files in myapp directory
+        run: dir  D:\a
+        
+      - name: List files in myapp directory
+        run: dir  D:\a\Jus-365\
 
       - name: List files in myapp directory
-        run: dir  D:\a\Jus-365\Jus-365\myapp\
-
+        run: dir  D:\a\Jus-365\Jus-365\
+        
       - name: Install dotnet-ef tool
         run: dotnet tool install --global dotnet-ef
 
