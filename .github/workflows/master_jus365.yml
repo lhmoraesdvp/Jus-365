@@ -33,8 +33,9 @@ jobs:
       - name: Apply Entity Framework Core Migrations
         env:
           ASPNETCORE_ENVIRONMENT: 'Production'
-          ConnectionStrings__DefaultConnection: "${{ secrets.DefaultConnection }}"
+          ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
         run: |
+          echo "Applying migrations using connection string: $ConnectionStrings__DefaultConnection"
           dotnet ef database update --project ./Jus365.csproj --context ApplicationDbContext
 
       - name: Publish with dotnet
