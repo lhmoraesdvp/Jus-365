@@ -1,7 +1,7 @@
 ﻿using Jus_365.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using static Jus_365.Models.ProdutoModel;
+using static Jus_365.Models.Produto;
 
 namespace Jus_365.Data
 {
@@ -12,6 +12,6 @@ namespace Jus_365.Data
         {
             
         }
-        public DbSet<ProdutoModel> Produtos { get; set; }
+        public DbSet<Produto> Produtos { get; set; }
     }
 }
