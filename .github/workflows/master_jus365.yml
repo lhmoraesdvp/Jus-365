@@ -15,8 +15,8 @@ jobs:
 
       - name: Verificar existência do secret
         run: |
-          Write-Host "Verificando se o secret 'YOUR_SECRET' existe..."
-          if ($env:YOUR_SECRET) {
+          Write-Host "Verificando se o secret 'TEST_SECRET' existe..."
+          if ($env:TEST_SECRET) {
           Write-Host "O secret 'YOUR_SECRET' existe."
            } else {
            Write-Host "O secret 'YOUR_SECRET' não existe."
