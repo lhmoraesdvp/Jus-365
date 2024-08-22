@@ -13,13 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check if TEST_SECRET is set
+      - name: Verificar existência do secret
         run: |
-          if ($env:TEST_SECRET -eq $null -or $env:TEST_SECRET -eq "") {
-            Write-Host "TEST_SECRET is not set."
-          } else {
-            Write-Host "TEST_SECRET is set."
-          }
+          Write-Host "Verificando se o secret 'YOUR_SECRET' existe..."
+          if ($env:YOUR_SECRET) {
+          Write-Host "O secret 'YOUR_SECRET' existe."
+           } else {
+           Write-Host "O secret 'YOUR_SECRET' não existe."
+           }
 
       - name: Check if DefaultConnection is set
         run: |
