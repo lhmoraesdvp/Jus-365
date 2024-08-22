@@ -22,13 +22,19 @@ jobs:
         with:
           dotnet-version: '8.x'
 
+      - name: List directory before build
+        run: dir
+
       - name: Build with dotnet
         run: dotnet build --configuration Release
+
+      - name: List directory after build
+        run: dir
 
       - name: Publish with dotnet
         run: dotnet publish -c Release -o ./myapp
 
-      - name: List contents of the myapp directory
+      - name: List directory after publish
         run: dir ./myapp
 
       - name: Upload artifact for deployment job
@@ -50,7 +56,7 @@ jobs:
         with:
           name: .net-app
 
-      - name: List contents of the artifact directory
+      - name: List directory after download
         run: dir ./myapp
 
       - name: Deploy to Azure Web App
