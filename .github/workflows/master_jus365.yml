@@ -60,8 +60,8 @@ jobs:
 
       - name: Apply Entity Framework Core Migrations
         run: |
-          dir ./*.csproj
-          dotnet ef database update --project \out\jus365.csproj --context ApplicationDbContext
+          dir 
+          dotnet ef database update --project jus365.csproj --context ApplicationDbContext
           env:
           ASPNETCORE_ENVIRONMENT: 'Production'
           ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
