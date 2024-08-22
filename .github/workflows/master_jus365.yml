@@ -44,7 +44,7 @@ jobs:
           name: .net-app
 
       - name: List files in myapp directory
-        run: dir D:\a\Jus-365\Jus-365\
+        run: dir  D:\a\Jus-365\Jus-365\myapp\
 
       - name: Install dotnet-ef tool
         run: dotnet tool install --global dotnet-ef
