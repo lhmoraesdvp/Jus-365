@@ -13,6 +13,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Verificar existência do secret
+        run: |
+          Write-Host "Verificando se o secret 'TEST_SECRET' existe..."
+          if ($env:TEST_SECRET) {
+          Write-Host "O secret 'TEST_SECRET' existe."
+           } else {
+           Write-Host "O secret 'TEST_SECRET' não existe."
+           }
+
+      - name: Check if DefaultConnection is set
+        run: |
+          if ($env:DefaultConnection -eq $null -or $env:DefaultConnection -eq "") {
+            Write-Host "DefaultConnection is not set."
+          } else {
+            Write-Host "DefaultConnection is set."
+          }
+
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
@@ -24,16 +41,10 @@ jobs:
       - name: Install dotnet-ef tool
         run: dotnet tool install --global dotnet-ef
 
-      - name: Debug Connection String
-        env:
-          CONNECTION_STRING: ${{ secrets.DefaultConnection }}
-        run: |
-          echo "Connection String: ${CONNECTION_STRING:0:10}***"
-
       - name: Apply Entity Framework Core Migrations
         env:
           ASPNETCORE_ENVIRONMENT: 'Production'
-          ConnectionStrings__DefaultConnection: "${{ secrets.DefaultConnection }}"
+          ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
         run: |
           dotnet ef database update --project ./Jus365.csproj --context ApplicationDbContext
 
