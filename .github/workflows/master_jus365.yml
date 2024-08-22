@@ -42,16 +42,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-          
-      - name: List files in myapp 
-        run: dir D:\a\Jus-365\Jus-365
+
+      - name: List files in myapp directory
+        run: dir ./myapp
 
       - name: Install dotnet-ef tool
         run: dotnet tool install --global dotnet-ef
 
       - name: Apply Entity Framework Core Migrations
         run: |
-          dotnet ef database update --project "...\Jus 365.csproj" --context ApplicationDbContext
+          dotnet ef database update --project "./myapp/Jus 365.csproj" --context ApplicationDbContext
         env:
           ASPNETCORE_ENVIRONMENT: 'Production'
           ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
