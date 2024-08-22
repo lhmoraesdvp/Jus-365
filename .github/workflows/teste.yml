@@ -1,0 +1,2 @@
+      - name: List files in myapp directory
+        run: dir ./myapp
