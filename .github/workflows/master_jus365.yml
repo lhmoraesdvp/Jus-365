@@ -28,7 +28,7 @@ jobs:
         run: dotnet publish -c Release -o ./myapp
 
       - name: List contents of working directory
-        run: dir
+        run: dir ./
         shell: pwsh
 
       - name: List contents of myapp directory
