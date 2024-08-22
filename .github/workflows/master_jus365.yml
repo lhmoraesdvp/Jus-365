@@ -25,11 +25,11 @@ jobs:
         run: dotnet tool install --global dotnet-ef
 
       - name: Apply Entity Framework Core Migrations
-        env:  # Mover o bloco env para a posição correta
+        env:
           ASPNETCORE_ENVIRONMENT: 'Production'
           ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
         run: |
-          dotnet ef database update --project D:\a\Jus-365\Jus-365\Jus365.csproj --context ApplicationDbContext
+          dotnet ef database update --project ./Jus365.csproj --context ApplicationDbContext
 
       - name: Publish with dotnet
         run: dotnet publish -c Release -o ./myapp
