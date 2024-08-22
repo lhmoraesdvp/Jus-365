@@ -24,6 +24,12 @@ jobs:
       - name: Install dotnet-ef tool
         run: dotnet tool install --global dotnet-ef
 
+      - name: Debug Connection String
+        env:
+          CONNECTION_STRING: ${{ secrets.DefaultConnection }}
+        run: |
+          echo "Connection String: ${CONNECTION_STRING:0:10}***"
+
       - name: Apply Entity Framework Core Migrations
         env:
           ASPNETCORE_ENVIRONMENT: 'Production'
