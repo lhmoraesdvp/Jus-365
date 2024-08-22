@@ -52,5 +52,15 @@ jobs:
         with:
           app-name: 'jus365'
           slot-name: 'production'
-          package: .
+          package: ./myapp
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}
+
+      - name: Install dotnet-ef tool
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Apply Entity Framework Core Migrations
+        run: |
+          dotnet ef database update --project ./myapp/YourProjectName.csproj --context YourDbContextName
+        env:
+          ASPNETCORE_ENVIRONMENT: 'Production'
+          ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
