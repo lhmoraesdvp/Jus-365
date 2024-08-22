@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - jus365
+name: Build and Deploy ASP.NET Core App to Azure Web App
 
 on:
   push:
@@ -22,25 +22,20 @@ jobs:
         with:
           dotnet-version: '8.x'
 
-      - name: List directory before build
-        run: dir
-
-      - name: Build with dotnet
+      - name: Build the project
         run: dotnet build --configuration Release
 
-      - name: List directory after build
-        run: dir
+      - name: Publish the project
+        run: dotnet publish --configuration Release --output ./myapp
 
-      - name: Publish with dotnet
-        run: dotnet publish -c Release -o ./myapp
+      - name: List files in myapp directory
+        run: |
+          if (Test-Path ./myapp) { dir ./myapp } else { Write-Output "Directory ./myapp not found" }
 
-      - name: List directory after publish
-        run: dir ./myapp
-
-      - name: Upload artifact for deployment job
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: .net-app
+          name: myapp-artifact
           path: ./myapp
 
   deploy:
@@ -48,22 +43,21 @@ jobs:
     needs: build
     environment:
       name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
+          name: myapp-artifact
 
-      - name: List directory after download
-        run: dir ./myapp
+      - name: List files in myapp directory after download
+        run: |
+          if (Test-Path ./myapp) { dir ./myapp } else { Write-Output "Directory ./myapp not found" }
 
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'jus365'
           slot-name: 'Production'
           package: ./myapp
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EBD5C7525D204D04AD0C05C8AFD1ED85 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
