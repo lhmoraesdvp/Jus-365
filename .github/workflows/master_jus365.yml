@@ -26,7 +26,7 @@ jobs:
 
       - name: Print Test Secret
         run: |
-          echo "Test Secret: ${{ secrets.TEST_SECRET }}"
+          echo "Test Secret:  ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}"
 
       - name: Apply Entity Framework Core Migrations
         env:
