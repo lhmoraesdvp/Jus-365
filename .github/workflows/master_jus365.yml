@@ -44,7 +44,7 @@ jobs:
           name: .net-app
 
       - name: List files in myapp directory
-        run: dir ./
+        run: dir 
 
       - name: Install dotnet-ef tool
         run: dotnet tool install --global dotnet-ef
