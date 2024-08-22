@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - jus365
+name: Build and Deploy ASP.NET Core App to Azure Web App - jus365
 
 on:
   push:
@@ -24,33 +24,33 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: Publish with dotnet
+        run: dotnet publish -c Release -o ./myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ./myapp
 
   deploy:
     runs-on: windows-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-      
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'jus365'
-          slot-name: 'Production'
-          package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A7050D3F7ECC43DEBD2B6BD3E215B381 }}
+          slot-name: 'production'
+          package: ./myapp
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_1b0930b3841f43919d18a96833db8b0d }}
