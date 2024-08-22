@@ -17,9 +17,9 @@ jobs:
         run: |
           Write-Host "Verificando se o secret 'TEST_SECRET' existe..."
           if ($env:TEST_SECRET) {
-          Write-Host "O secret 'YOUR_SECRET' existe."
+          Write-Host "O secret 'TEST_SECRET' existe."
            } else {
-           Write-Host "O secret 'YOUR_SECRET' não existe."
+           Write-Host "O secret 'TEST_SECRET' não existe."
            }
 
       - name: Check if DefaultConnection is set
