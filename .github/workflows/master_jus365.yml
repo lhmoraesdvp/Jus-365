@@ -1,4 +1,7 @@
-name: Build and Deploy ASP.NET Core App to Azure Web App
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and Deploy ASP.NET Core App to Azure Web App - jus365
 
 on:
   push:
@@ -24,7 +27,7 @@ jobs:
       - name: Publish with dotnet
         run: dotnet publish -c Release -o ./myapp
 
-      - name: Upload artifact
+      - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
@@ -33,25 +36,31 @@ jobs:
   deploy:
     runs-on: windows-latest
     needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Download artifact
+      - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
 
-      - name: Determine project path (ajuste este caminho conforme sua estrutura)
-        run: echo "::set-output name=project_path::$(git rev-parse --show-toplevel)/src/MyApp/MyApp.csproj"
-        id: set_project_path
-
       - name: Deploy to Azure Web App
-        # ... (configuração do deployment para o Azure)
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'jus365'
+          slot-name: 'production'
+          package: .
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}
 
-      - name: Apply migrations
+      - name: Install dotnet-ef tool
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Apply Entity Framework Core Migrations
         run: |
-          dotnet ef database update --project "${{ steps.set_project_path.outputs.project_path }}" --context ApplicationDbContext
+          dotnet ef database update --project ./myapp/Jus 365.csproj --context ApplicationDbContext
         env:
-          ASPNETCORE_ENVIRONMENT: Production
-          ConnectionStrings__DefaultConnection: ${{ secrets.ConnectionStrings__DefaultConnection }}
+          ASPNETCORE_ENVIRONMENT: 'Production'
+          ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
