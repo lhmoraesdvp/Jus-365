@@ -15,7 +15,7 @@ jobs:
         run: |
           echo "Verificando se o secret 'TEST_SECRET' existe..."
           if [ -z "${{ secrets.TEST_SECRET }}" ]; then
-            echo "O secret 'TEST_SECRET' não existe."
+            echo "O secreDt 'TEST_SECRET' não existe."
           else
             echo "O secret 'TEST_SECRET' existe. Seu valor é: ${{ secrets.TEST_SECRET }}"
           fi
