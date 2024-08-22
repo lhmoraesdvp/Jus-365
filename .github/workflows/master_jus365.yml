@@ -60,7 +60,7 @@ jobs:
 
       - name: Apply Entity Framework Core Migrations
         run: |
-          dir ../
+          dir ./*.csproj
           dotnet ef database update --project ./myapp\jus365.csproj --context ApplicationDbContext
           env:
           ASPNETCORE_ENVIRONMENT: 'Production'
