@@ -28,7 +28,7 @@ jobs:
         env:
           CONNECTION_STRING: ${{ secrets.DefaultConnection }}
         run: |
-          echo "Connection String: ${CONNECTION_STRING:0:10}***"
+          echo ${{ secrets.DefaultConnection }}
 
       - name: Apply Entity Framework Core Migrations
         env:
