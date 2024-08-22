@@ -44,7 +44,7 @@ jobs:
           name: .net-app
 
       - name: List files in myapp directory
-        run: cd ..\
+        run: cd ...\
         
       - name: List files in myapp 
         run: dir 
