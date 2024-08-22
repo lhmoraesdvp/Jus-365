@@ -40,37 +40,40 @@ jobs:
           path: ./myapp
 
   deploy:
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: 'production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  runs-on: windows-latest
+  needs: build
+  environment:
+    name: 'production'
+    url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
+  steps:
+  - name: Download   
+ artifact from build job
+    uses: actions/download-artifact@v4   
 
-      - name: List contents of downloaded artifact
-        run: dir ./
-        shell: pwsh
+    with:
+      name: .net-app
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'jus365'
-          slot-name: 'production'
-          package: .
-          publish-profile: ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}
+  - name: List contents of downloaded artifact (for verification)
+    run: dir ./
+    shell: pwsh
 
-      - name: Install dotnet-ef tool
-        run: dotnet tool install --global dotnet-ef
+  - name: Deploy to Azure Web App
+    id: deploy-to-webapp
+    uses: azure/webapps-deploy@v3
+    with:
+      app-name: 'jus365'
+      slot-name: 'production'
+      package: .
+      publish-profile: ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}
 
-      - name: Apply Entity Framework Core Migrations
-        run: |
-          dotnet ef database update --project "./myapp/Jus 365.csproj" --context ApplicationDbContext
-        env:
-          ASPNETCORE_ENVIRONMENT: 'Production'
-          ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
+  - name: Install dotnet-ef tool (optional, if not pre-installed)
+    run: dotnet tool install --global dotnet-ef  # Removed if pre-installed
+
+  - name: Apply Entity Framework Core Migrations (consider full path)
+    run: |
+      dotnet ef database update --project "/path/to/deployment/Jus 365.csproj" --context ApplicationDbContext
+      # Replace "/path/to/deployment" with the actual path on the server
+    env:
+      ASPNETCORE_ENVIRONMENT: 'Production'
+      ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
