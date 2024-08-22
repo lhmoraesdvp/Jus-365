@@ -47,12 +47,20 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-      
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'jus365'
           slot-name: 'Production'
-          package: .
+          package: ./myapp
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EC1D8C40E201473DAACFCA9F35E41C10 }}
+
+      - name: Apply Entity Framework Core Migrations
+        run: |
+          dotnet tool install --global dotnet-ef
+          dotnet ef database update --project YourProjectName --context YourDbContextName
+        env:
+          ASPNETCORE_ENVIRONMENT: 'Production'
+          ConnectionStrings__DefaultConnection: ${{ secrets.YOUR_CONNECTION_STRING }}
