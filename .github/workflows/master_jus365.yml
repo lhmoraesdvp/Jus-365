@@ -24,16 +24,18 @@ jobs:
       - name: Install dotnet-ef tool
         run: dotnet tool install --global dotnet-ef
 
-      - name: Test Connection String
-        run: echo "Connection String: ${{ secrets.DefaultConnection }}"
+      - name: Debug Connection String
+        env:
+          CONNECTION_STRING: ${{ secrets.DefaultConnection }}
+        run: |
+          echo "Connection String: ${CONNECTION_STRING:0:10}***"
 
       - name: Apply Entity Framework Core Migrations
         env:
           ASPNETCORE_ENVIRONMENT: 'Production'
-          ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
+          ConnectionStrings__DefaultConnection: "${{ secrets.DefaultConnection }}"
         run: |
-          echo "Applying migrations using connection string: ${{ secrets.DefaultConnection:0:10 }}***"
-          dotnet ef database update --connection "${{ secrets.DefaultConnection }}" --context ApplicationDbContext
+          dotnet ef database update --project ./Jus365.csproj --context ApplicationDbContext
 
       - name: Publish with dotnet
         run: dotnet publish -c Release -o ./myapp
