@@ -24,14 +24,14 @@ jobs:
       - name: Publish with dotnet
         run: dotnet publish -c Release -o ./myapp
 
-      - name: List contents of working directory
+      - name: List contents of working directory (for verification)
         run: dir ./
-        shell: pwsh
+        shell: pwsh  # Optional for PowerShell commands
 
-      - name: List contents of myapp directory
+      - name: List contents of myapp directory (for verification)
         run: |
           if (Test-Path ./myapp) { dir ./myapp } else { Write-Host "Directory './myapp' does not exist." }
-        shell: pwsh
+        shell: pwsh  # Optional for PowerShell commands
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -40,40 +40,38 @@ jobs:
           path: ./myapp
 
   deploy:
-  runs-on: windows-latest
-  needs: build
-  environment:
-    name: 'production'
-    url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    runs-on: windows-latest
+    needs: build  # This job depends on the successful completion of the "build" job
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-  steps:
-  - name: Download   
- artifact from build job
-    uses: actions/download-artifact@v4   
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
 
-    with:
-      name: .net-app
+      - name: List contents of downloaded artifact (for verification)
+        run: dir ./
+        shell: pwsh  # Optional for PowerShell commands
 
-  - name: List contents of downloaded artifact (for verification)
-    run: dir ./
-    shell: pwsh
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'jus365'
+          slot-name: 'production'
+          package: .
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}
 
-  - name: Deploy to Azure Web App
-    id: deploy-to-webapp
-    uses: azure/webapps-deploy@v3
-    with:
-      app-name: 'jus365'
-      slot-name: 'production'
-      package: .
-      publish-profile: ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}
+      - name: Install dotnet-ef tool (optional, if not pre-installed)
+        run: dotnet tool install --global dotnet-ef
 
-  - name: Install dotnet-ef tool (optional, if not pre-installed)
-    run: dotnet tool install --global dotnet-ef  # Removed if pre-installed
-
-  - name: Apply Entity Framework Core Migrations (consider full path)
-    run: |
-      dotnet ef database update --project "/path/to/deployment/Jus 365.csproj" --context ApplicationDbContext
-      # Replace "/path/to/deployment" with the actual path on the server
-    env:
-      ASPNETCORE_ENVIRONMENT: 'Production'
-      ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
+      - name: Apply Entity Framework Core Migrations (consider full path)
+        # Replace "/path/to/deployment" with the actual path on the server
+        run: |
+          dotnet ef database update --project "/path/to/deployment/Jus 365.csproj" --context ApplicationDbContext
+        env:
+          ASPNETCORE_ENVIRONMENT: 'Production'
+          ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
