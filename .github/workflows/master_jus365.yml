@@ -1,4 +1,4 @@
-name: Build and Deploy ASP.NET Core App to Azure Web App - jus365
+name: Build and Deploy ASP.NET Core App to Azure Web App
 
 on:
   push:
@@ -24,32 +24,34 @@ jobs:
       - name: Publish with dotnet
         run: dotnet publish -c Release -o ./myapp
 
-      - name: List contents of working directory (verification)
-        run: dir ./  # Optional verification step
-        shell: pwsh  # Optional for PowerShell commands
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4  # Ensure compatible versions used here and in deploy job
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: .net-app  # Ensure consistent name
+          name: .net-app
           path: ./myapp
 
   deploy:
     runs-on: windows-latest
+    needs: build
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set project path
-        run: echo "::set-output name=project_path::$(git rev-parse --show-toplevel)/src/MyApp"
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+
+      - name: Determine project path (ajuste este caminho conforme sua estrutura)
+        run: echo "::set-output name=project_path::$(git rev-parse --show-toplevel)/src/MyApp/MyApp.csproj"
         id: set_project_path
 
       - name: Deploy to Azure Web App
-        # ...
+        # ... (configuração do deployment para o Azure)
 
-      - name: Apply Entity Framework Core Migrations
+      - name: Apply migrations
         run: |
           dotnet ef database update --project "${{ steps.set_project_path.outputs.project_path }}" --context ApplicationDbContext
         env:
-          ASPNETCORE_ENVIRONMENT: 'Production'
-          ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
+          ASPNETCORE_ENVIRONMENT: Production
+          ConnectionStrings__DefaultConnection: ${{ secrets.ConnectionStrings__DefaultConnection }}
