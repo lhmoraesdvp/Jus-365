@@ -24,26 +24,32 @@ jobs:
       - name: Publish with dotnet
         run: dotnet publish -c Release -o ./myapp
 
-      - name: Get repository root
-        run: echo "::set-output name=repo_root::$(git rev-parse --show-toplevel)"
-        id: get_root
+      - name: List contents of working directory (verification)
+        run: dir ./  # Optional verification step
+        shell: pwsh  # Optional for PowerShell commands
 
-      - name: Set project path
-        run: echo "::set-output name=project_path::${{ steps.get_root.outputs.repo_root }}/Jus 365.csproj"
-        id: set_project_path
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4  # Ensure compatible versions used here and in deploy job
+        with:
+          name: .net-app  # Ensure consistent name
+          path: ./myapp
 
   deploy:
     runs-on: windows-latest
-    needs: build
+    needs: build  # This job depends on the successful completion of the "build" job
     environment:
       name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4  # Ensure compatible versions used here and in build job
         with:
-          name: .net-app
+          name: .net-app  # Ensure consistent name
+
+      - name: List contents of downloaded artifact (verification)
+        run: dir ./  # Optional verification step
+        shell: pwsh  # Optional for PowerShell commands
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -54,12 +60,13 @@ jobs:
           package: .
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}
 
-      - name: Install dotnet-ef tool
+      - name: Install dotnet-ef tool (optional, if not pre-installed)
         run: dotnet tool install --global dotnet-ef
 
       - name: Apply Entity Framework Core Migrations
+        # Replace "/path/to/deployment" with the actual path on the server (consider full path)
         run: |
-          dotnet ef database update --project "${{ steps.set_project_path.outputs.project_path }}" --context ApplicationDbContext
+          dotnet ef database update --project "/path/to/deployment/Jus 365.csproj" --context ApplicationDbContext
         env:
           ASPNETCORE_ENVIRONMENT: 'Production'
           ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
