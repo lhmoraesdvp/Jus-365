@@ -24,6 +24,17 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
+      - name: Install dotnet-ef tool
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Apply Entity Framework Core Migrations
+        run: |
+          dir 
+          dotnet ef database update --project D:\a\Jus-365\Jus-365\Jus365.csproj --context ApplicationDbContext
+          env:
+          ASPNETCORE_ENVIRONMENT: 'Production'
+          ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
+
       - name: Publish with dotnet
         run: dotnet publish -c Release -o ./myapp
 
@@ -55,13 +66,4 @@ jobs:
           package: .
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}
 
-      - name: Install dotnet-ef tool
-        run: dotnet tool install --global dotnet-ef
-
-      - name: Apply Entity Framework Core Migrations
-        run: |
-          dir ./
-          dotnet ef database update --project Jus365.csproj --context ApplicationDbContext
-          env:
-          ASPNETCORE_ENVIRONMENT: 'Production'
-          ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
+      
