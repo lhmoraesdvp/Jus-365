@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and Deploy ASP.NET Core App to Azure Web App - jus365
 
 on:
@@ -56,8 +53,7 @@ jobs:
           name: .net-app
 
       - name: List contents of downloaded artifact
-        run: |
-          if (Test-Path ./myapp) { dir ./myapp } else { Write-Host "Directory './myapp' does not exist." }
+        run: dir ./
         shell: pwsh
 
       - name: Deploy to Azure Web App
@@ -66,7 +62,7 @@ jobs:
         with:
           app-name: 'jus365'
           slot-name: 'production'
-          package: .
+          package: ./myapp
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}
 
       - name: Install dotnet-ef tool
@@ -74,7 +70,7 @@ jobs:
 
       - name: Apply Entity Framework Core Migrations
         run: |
-          dotnet ef database update --project ./myapp/Jus\ 365.csproj --context ApplicationDbContext
+          dotnet ef database update --project "./myapp/Jus 365.csproj" --context ApplicationDbContext
         env:
           ASPNETCORE_ENVIRONMENT: 'Production'
           ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
