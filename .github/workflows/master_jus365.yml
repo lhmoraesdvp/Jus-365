@@ -49,8 +49,11 @@ jobs:
         with:
           name: .net-app
 
-      - name: List directory contents
-        run: dir .\myapp
+      - name: List contents of the current directory
+        run: dir
+
+      - name: List contents of the myapp directory
+        run: dir .\myapp || echo "Directory not found"
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
