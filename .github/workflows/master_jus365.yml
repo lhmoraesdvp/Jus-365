@@ -12,22 +12,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Check if TEST_SECRET is set
         run: |
-          if [ -z "${{ secrets.TEST_SECRET }}" ]; then
-            echo "TEST_SECRET is not set."
-          else
-            echo "TEST_SECRET is set."
-          fi
+          if ($env:TEST_SECRET -eq $null -or $env:TEST_SECRET -eq "") {
+            Write-Host "TEST_SECRET is not set."
+          } else {
+            Write-Host "TEST_SECRET is set."
+          }
 
       - name: Check if DefaultConnection is set
         run: |
-          if [ -z "${{ secrets.DefaultConnection }}" ]; then
-            echo "DefaultConnection is not set."
-          else
-            echo "DefaultConnection is set."
-          fi
+          if ($env:DefaultConnection -eq $null -or $env:DefaultConnection -eq "") {
+            Write-Host "DefaultConnection is not set."
+          } else {
+            Write-Host "DefaultConnection is set."
+          }
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
