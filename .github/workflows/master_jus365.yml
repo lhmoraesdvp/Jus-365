@@ -24,24 +24,17 @@ jobs:
       - name: Publish with dotnet
         run: dotnet publish -c Release -o ./myapp
 
-      - name: List contents of working directory (for verification)
-        run: dir ./
-        shell: pwsh  # Optional for PowerShell commands
+      - name: Get repository root
+        run: echo "::set-output name=repo_root::$(git rev-parse --show-toplevel)"
+        id: get_root
 
-      - name: List contents of myapp directory (for verification)
-        run: |
-          if (Test-Path ./myapp) { dir ./myapp } else { Write-Host "Directory './myapp' does not exist." }
-        shell: pwsh  # Optional for PowerShell commands
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: .net-app
-          path: ./myapp
+      - name: Set project path
+        run: echo "::set-output name=project_path::${{ steps.get_root.outputs.repo_root }}/Jus 365.csproj"
+        id: set_project_path
 
   deploy:
     runs-on: windows-latest
-    needs: build  # This job depends on the successful completion of the "build" job
+    needs: build
     environment:
       name: 'production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -52,10 +45,6 @@ jobs:
         with:
           name: .net-app
 
-      - name: List contents of downloaded artifact (for verification)
-        run: dir ./
-        shell: pwsh  # Optional for PowerShell commands
-
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
@@ -65,13 +54,12 @@ jobs:
           package: .
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_5f50f15d78ea413f9dd0fc710fd36446 }}
 
-      - name: Install dotnet-ef tool (optional, if not pre-installed)
+      - name: Install dotnet-ef tool
         run: dotnet tool install --global dotnet-ef
 
-      - name: Apply Entity Framework Core Migrations (consider full path)
-        # Replace "/path/to/deployment" with the actual path on the server
+      - name: Apply Entity Framework Core Migrations
         run: |
-          dotnet ef database update --project "/path/to/deployment/Jus 365.csproj" --context ApplicationDbContext
+          dotnet ef database update --project "${{ steps.set_project_path.outputs.project_path }}" --context ApplicationDbContext
         env:
           ASPNETCORE_ENVIRONMENT: 'Production'
           ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
