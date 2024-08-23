@@ -12,6 +12,6 @@ namespace Jus_365.Data
         {
             
         }
-        public DbSet<Produto> Produtos { get; set; }
+     
     }
 }
