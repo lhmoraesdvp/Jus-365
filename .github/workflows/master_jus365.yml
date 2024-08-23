@@ -12,24 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Verificar existência do secret
-        run: |
-          Write-Host "Verificando se o secret 'TEST_SECRET' existe..."
-          if ($env:TEST_SECRET) {
-          Write-Host "O secret 'TEST_SECRET' existe."
-           } else {
-           Write-Host "O secret 'TEST_SECRET' não existe."
-           }
-
-      - name: Check if DefaultConnection is set
-        run: |
-          if (${{ secrets.DefaultConnection }} -eq $null -or $env:DefaultConnection -eq "") {
-            Write-Host "DefaultConnection is not set."
-          } else {
-            Write-Host "DefaultConnection is set."
-          }
-
+      
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
