@@ -1,7 +1,7 @@
 ﻿using Jus_365.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using static Jus_365.Models.Produto;
+
 
 namespace Jus_365.Data
 {
