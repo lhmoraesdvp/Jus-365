@@ -1,40 +1,49 @@
 using Jus_365.Data;
+using Jus_365.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Adicionar serviços ao contêiner.
+// Adicionar serviï¿½os ao contï¿½iner.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Adicionar o filtro para páginas de erro do desenvolvedor (opcional)
+// Adicionar o filtro para pï¿½ginas de erro do desenvolvedor (opcional)
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Configurar o Identity
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>() // Adiciona suporte para Roles
+    .AddEntityFrameworkStores<ApplicationDbContext>(); // Adiciona a store do EF Core para o Identity
+
 
 // Adicionar controladores e views
 builder.Services.AddControllersWithViews();
+// Registro do UserService
+builder.Services.AddHostedService<ApplicationStartupService>();
+
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<IMenuService, MenuService>();
 
 var app = builder.Build();
 
-// Log para depuração: Verifique se a connection string está sendo carregada corretamente
+// Log para depuraï¿½ï¿½o: Verifique se a connection string estï¿½ sendo carregada corretamente
 Console.WriteLine($"Connection String: {connectionString}");
 
-// Configuração do pipeline de requisições HTTP
+// Configuraï¿½ï¿½o do pipeline de requisiï¿½ï¿½es HTTP
 if (app.Environment.IsDevelopment())
 {
-    // Exibir o ponto de migração se estiver no ambiente de desenvolvimento
+    // Exibir o ponto de migraï¿½ï¿½o se estiver no ambiente de desenvolvimento
     app.UseMigrationsEndPoint();
 }
 else
 {
-    // Configuração de produção
+    // Configuraï¿½ï¿½o de produï¿½ï¿½o
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
@@ -44,12 +53,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();  // Adicionar autenticação
+app.UseAuthentication();  // Adicionar autenticaï¿½ï¿½o
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+// Inicialize o banco de dados com o usuÃ¡rio e role
 
 app.Run();

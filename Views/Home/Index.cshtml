@@ -1,4 +1,4 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    // Verifica se a variável 'roles' não é nula e é do tipo correto
+    var roles = ViewBag.Roles as IList<string> ?? new List<string>();
 }
-

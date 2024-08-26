@@ -1,0 +1,25 @@
+﻿@model RoleViewModel
+
+@{
+    ViewData["Title"] = "Delete Role";
+}
+
+<h2>Delete Role</h2>
+<!-- Exibe todas as mensagens de erro -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    </div>
+}
+<form asp-action="Delete">
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a href="@Url.Action("Index", "Role")" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
