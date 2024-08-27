@@ -29,7 +29,7 @@ jobs:
           ASPNETCORE_ENVIRONMENT: 'Production'
           ConnectionStrings__DefaultConnection: ${{ secrets.DefaultConnection }}
         run: |
-          dotnet ef database update 20240822134219_00000000000001_CreateIdentitySchema --project ./Jus365.csproj --context ApplicationDbContext
+          dotnet ef database update --project ./Jus365.csproj --context ApplicationDbContext
 
       - name: Publish with dotnet
         run: dotnet publish -c Release -o ./myapp
