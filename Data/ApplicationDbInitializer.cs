@@ -17,7 +17,16 @@ public static class ApplicationDbInitializer
 
             if (!await roleManager.RoleExistsAsync(roleName))
             {
-                await roleManager.CreateAsync(new IdentityRole(roleName));
+                var result = await roleManager.CreateAsync(new IdentityRole(roleName));
+                if (!result.Succeeded)
+                {
+                    // Log or handle the errors
+                    foreach (var error in result.Errors)
+                    {
+                        // Log each error
+                        Console.WriteLine($"Error: {error.Description}");
+                    }
+                }
             }
 
             var user = await userManager.FindByEmailAsync(userEmail);
@@ -26,17 +35,45 @@ public static class ApplicationDbInitializer
             {
                 user = new ApplicationUser { UserName = userEmail, Email = userEmail,EmailConfirmed = true };
                 var result = await userManager.CreateAsync(user, "Agatha28022020@");
-
+                if (!result.Succeeded)
+                {
+                    // Log or handle the errors
+                    foreach (var error in result.Errors)
+                    {
+                        // Log each error
+                        Console.WriteLine($"Error: {error.Description}");
+                    }
+                }
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, roleName);
+                   var result2 = await userManager.AddToRoleAsync(user, roleName);
+                    if (!result2.Succeeded)
+                    {
+                        // Log or handle the errors
+                        foreach (var error in result2.Errors)
+                        {
+                            // Log each error
+                            Console.WriteLine($"Error: {error.Description}");
+                        }
+                    }
                 }
+      
             }
             else
             {
                 if (!await userManager.IsInRoleAsync(user, roleName))
                 {
-                    await userManager.AddToRoleAsync(user, roleName);
+                 var result3=   await userManager.AddToRoleAsync(user, roleName);
+
+                    if (!result3.Succeeded)
+                    {
+                        // Log or handle the errors
+                        foreach (var error in result3.Errors)
+                        {
+                            // Log each error
+                            Console.WriteLine($"Error: {error.Description}");
+                        }
+                    }
                 }
             }
         }
