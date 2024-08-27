@@ -21,7 +21,7 @@ public class ApplicationStartupService : IHostedService
         }
         catch (Exception ex) {
 
-            Console.WriteLine($"@@@@@@@@@@@@@@@@@@@@@@@@@@@@Exception during initialization: {ex.Message}");
+            Console.WriteLine($"@@@@@@@@@@@@@@@s@@@@@@@@@@@@Exception during initialization: {ex.Message}");
             throw; // Re-throw the exception to be handled by the framework or further debugging
         }
 
