@@ -13,7 +13,7 @@ public class ApplicationStartupService : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-     //   await ApplicationDbInitializer.InitializeAsync(_serviceProvider);
+       await ApplicationDbInitializer.InitializeAsync(_serviceProvider);
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
