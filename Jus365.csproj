@@ -9,8 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\20240822230409_AddProdutoTable.cs" />
-    <Compile Remove="Data\Migrations\20240822230409_AddProdutoTable.Designer.cs" />
     <Compile Remove="Models\Produto.cs" />
   </ItemGroup>
 
@@ -26,10 +24,6 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
 </Project>
