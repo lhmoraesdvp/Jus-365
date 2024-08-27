@@ -13,7 +13,19 @@ public class ApplicationStartupService : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-       await ApplicationDbInitializer.InitializeAsync(_serviceProvider);
+        try
+        {
+            await ApplicationDbInitializer.InitializeAsync(_serviceProvider);
+
+
+        }
+        catch (Exception ex) {
+
+            Console.WriteLine($"@@@@@@@@@@@@@@@@@@@@@@@@@@@@Exception during initialization: {ex.Message}");
+            throw; // Re-throw the exception to be handled by the framework or further debugging
+        }
+
+
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

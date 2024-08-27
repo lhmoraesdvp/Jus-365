@@ -7,13 +7,18 @@ public static class ApplicationDbInitializer
 {
     public static async Task InitializeAsync(IServiceProvider serviceProvider)
     {
+        Console.WriteLine($"@@@@@@@@@@@@@@@@@@@@@@@@@@@@Exception during initializatio 1");
+
         using (var scope = serviceProvider.CreateScope())
         {
+            Console.WriteLine($"@@@@@@@@@@@@@@@@@@@@@@@@@@@@Exception during initializatio 2");
+
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             string userEmail = "moraes.luishenrique17@gmail.com";
             string roleName = "Admin";
+            Console.WriteLine($"@@@@@@@@@@@@@@@@@@@@@@@@@@@@Exception during initializatio 3");
 
             if (!await roleManager.RoleExistsAsync(roleName))
             {
@@ -28,6 +33,7 @@ public static class ApplicationDbInitializer
                     }
                 }
             }
+            Console.WriteLine($"@@@@@@@@@@@@@@@@@@@@@@@@@@@@Exception during initializatio 4");
 
             var user = await userManager.FindByEmailAsync(userEmail);
 
@@ -57,8 +63,10 @@ public static class ApplicationDbInitializer
                         }
                     }
                 }
-      
+                Console.WriteLine($"@@@@@@@@@@@@@@@@@@@@@@@@@@@@Exception during initializatio 5");
             }
+          
+
             else
             {
                 if (!await userManager.IsInRoleAsync(user, roleName))
@@ -75,6 +83,8 @@ public static class ApplicationDbInitializer
                         }
                     }
                 }
+                Console.WriteLine($"@@@@@@@@@@@@@@@@@@@@@@@@@@@@Exception during initializatio 6");
+
             }
         }
     }
