@@ -1,0 +1,147 @@
+﻿@{
+    ViewData["Title"] = "Tree View";
+}
+
+<h1>Tree View</h1>
+
+<div id="jstree"></div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#jstree').jstree({
+            "core": {
+                "animation": 0,
+                "check_callback": true,
+                "themes": { "stripes": true },
+                'data': {
+                    'url': function (node) {
+                        return node.id === '#' ? '/Menu/GetRootNodes' : '/Menu/GetChildNodes?id=' + node.id;
+                    }
+                }
+            },
+            "types": {
+                "#": {
+                    "max_children": 1,
+                    "max_depth": 4,
+                    "valid_children": ["root"]
+                },
+                "root": {
+                    "icon": "/static/3.3.16/assets/images/tree_icon.png",
+                    "valid_children": ["default"]
+                },
+                "default": {
+                    "valid_children": ["default", "file"]
+                },
+                "file": {
+                    "icon": "glyphicon glyphicon-file",
+                    "valid_children": []
+                }
+            },
+            "plugins": [
+                "contextmenu", "dnd", "search",
+                "state", "types", "wholerow"
+            ],
+            "contextmenu": {
+                "items": function ($node) {
+                    var tree = $("#jstree").jstree(true);
+                    return {
+                        "Create": {
+                            "label": "Criar",
+                            "action": function () {
+                                var parentId = $node.id;
+                                var nodeName = "Novo Nó";  // Nome temporário para o novo nó
+
+                                var newNode = { Name: nodeName, ParentId: parentId };
+                                $.ajax({
+                                    url: '/Menu/CreateNode',
+                                    type: 'POST',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify(newNode),
+                                    success: function (data) {
+                                        var tree = $('#jstree').jstree(true);
+
+                                        // Adiciona o nó na árvore e utiliza o callback para iniciar a edição
+                                        var newNodeId = tree.create_node(parentId, {
+                                            id: data.id, // Usa o ID retornado pelo servidor
+                                            text: nodeName,
+                                            state: { opened: true }
+                                        }, "last", function (newNode) {
+                                            // Seleciona e edita o nó recém-criado
+                                            if (newNode) {
+                                                tree.deselect_all();
+                                                tree.select_node(newNode);
+                                                tree.edit(newNode, null, function (node, status, canceled) {
+                                                    if (!canceled && node.text !== nodeName) {
+                                                        // Chama o controlador de renomeação após o nó ser renomeado pelo usuário
+                                                        $.ajax({
+                                                            url: '/Menu/RenameNode',
+                                                            type: 'POST',
+                                                            contentType: 'application/json',
+                                                            data: JSON.stringify({ id: node.id, Name: node.text }),
+                                                            success: function () {
+                                                                console.log("Nó renomeado com sucesso.");
+                                                            },
+                                                            error: function () {
+                                                                alert("Erro ao renomear o nó.");
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    },
+                                    error: function () {
+                                        alert("Erro ao criar o nó.");
+                                    }
+                                });
+                            }
+                        },
+                        "Rename": {
+                            "label": "Renomea",
+                            "action": function () {
+                                tree.edit($node, null, function (node) {
+                                    var updatedNode = { Id: node.id, Name: node.text };
+                                    $.ajax({
+                                        url: '/Menu/RenameNode',
+                                        type: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(updatedNode),
+                                        success: function () {
+                                            console.log("Nó renomeado com sucesso");
+                                            $('#jstree').jstree(true).refresh();
+                                        }
+                                    });
+                                });
+                            }
+                        },
+                        "Delete": {
+                            "label": "Excluir",
+                            "action": function (obj) {
+                                if (confirm("Tem certeza de que deseja excluir este item?")) {
+                                    var nodeId = $node.id;
+                                    console.log("ID do nó a ser excluído:", nodeId);
+                                    $.ajax({
+                                        url: '@Url.Action("DeleteNode", "Menu")',
+                                        type: 'POST',
+                                        data: { id: nodeId },
+                                        success: function () {
+                                            alert("Item excluido com sucesso.");
+                                            $('#jstree').jstree(true).refresh();
+                                        },
+                                        error: function () {
+                                            alert("Erro ao excluir o item.");
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    };
+                }
+            }
+        });
+    });
+</script>

@@ -30,6 +30,8 @@ public class MenuService : IMenuService
             menuItems.Add(new MenuItem { Name = "Roles", Url = "/Role" });
             menuItems.Add(new MenuItem { Name = "Planos", Url = "/Planos" });
             menuItems.Add(new MenuItem { Name = "Empresas", Url = "/Empresas" });
+            menuItems.Add(new MenuItem { Name = "Menu", Url = "/Menu" });
+
 
 
 

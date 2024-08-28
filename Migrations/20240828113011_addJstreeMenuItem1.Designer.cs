@@ -4,6 +4,7 @@ using Jus_365.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Jus_365.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240828113011_addJstreeMenuItem1")]
+    partial class addJstreeMenuItem1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,6 +164,45 @@ namespace Jus_365.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Empresa");
+                });
+
+            modelBuilder.Entity("Jus_365.Models.JsTreeMenuItem", b =>
+                {
+                    b.Property<int>("Id_Item")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id_Item"));
+
+                    b.Property<bool?>("HasChildren")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ParentId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("obs")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("obs2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("obsInt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("obsInt2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id_Item");
+
+                    b.ToTable("JsTreeMenuItem");
                 });
 
             modelBuilder.Entity("Jus_365.Models.Plano", b =>
