@@ -1,0 +1,48 @@
+﻿@model Jus_365.Models.NodeItem
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>NodeItem</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id_No)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id_No)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.caminho)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.caminho)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Obs1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Obs1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Obs2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Obs2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Obs3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Obs3)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

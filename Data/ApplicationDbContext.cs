@@ -17,6 +17,8 @@ namespace Jus_365.Data
         public DbSet<Empresa> Empresa { get; set; } // DbSet para a tabela de Empresa
         public DbSet<Models.JsTreeMenuItem> JsTreeMenuItem { get; set; } // DbSet para a tabela de Empresa
 
+        public DbSet<Models.NodeItem> NodeItem { get; set; } // DbSet para a tabela de Empresa
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

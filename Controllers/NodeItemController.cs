@@ -10,22 +10,22 @@ using Jus_365.Models;
 
 namespace Jus_365.Controllers
 {
-    public class EmpresasController : Controller
+    public class NodeItemController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public EmpresasController(ApplicationDbContext context)
+        public NodeItemController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Empresas
+        // GET: NodeItem
         public async Task<IActionResult> Index()
         {
-            return PartialView("_IndexPartial", await _context.Empresa.ToListAsync());
+            return View(await _context.NodeItem.ToListAsync());
         }
 
-        // GET: Empresas/Details/5
+        // GET: NodeItem/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace Jus_365.Controllers
                 return NotFound();
             }
 
-            var empresa = await _context.Empresa
+            var nodeItem = await _context.NodeItem
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (empresa == null)
+            if (nodeItem == null)
             {
                 return NotFound();
             }
 
-            return View(empresa);
+            return View(nodeItem);
         }
 
-        // GET: Empresas/Create
+        // GET: NodeItem/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Empresas/Create
+        // POST: NodeItem/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Razao_Social,Nome_Fantasia,CNPJ,CPF,InscricaoEstadual,InscricaoMunicipal,Endereco,Cidade,Estado,CEP,Telefone,Email_Admin,Data_Cadastro,Ativo")] Empresa empresa)
+        public async Task<IActionResult> Create([Bind("Id,Id_No,caminho,Obs1,Obs2,Obs3")] NodeItem nodeItem)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(empresa);
+                _context.Add(nodeItem);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(empresa);
+            return View(nodeItem);
         }
 
-        // GET: Empresas/Edit/5
+        // GET: NodeItem/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace Jus_365.Controllers
                 return NotFound();
             }
 
-            var empresa = await _context.Empresa.FindAsync(id);
-            if (empresa == null)
+            var nodeItem = await _context.NodeItem.FindAsync(id);
+            if (nodeItem == null)
             {
                 return NotFound();
             }
-            return View(empresa);
+            return View(nodeItem);
         }
 
-        // POST: Empresas/Edit/5
+        // POST: NodeItem/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Razao_Social,Nome_Fantasia,CNPJ,CPF,InscricaoEstadual,InscricaoMunicipal,Endereco,Cidade,Estado,CEP,Telefone,Email_Admin,Data_Cadastro,Ativo")] Empresa empresa)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Id_No,caminho,Obs1,Obs2,Obs3")] NodeItem nodeItem)
         {
-            if (id != empresa.Id)
+            if (id != nodeItem.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace Jus_365.Controllers
             {
                 try
                 {
-                    _context.Update(empresa);
+                    _context.Update(nodeItem);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmpresaExists(empresa.Id))
+                    if (!NodeItemExists(nodeItem.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace Jus_365.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(empresa);
+            return View(nodeItem);
         }
 
-        // GET: Empresas/Delete/5
+        // GET: NodeItem/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +124,34 @@ namespace Jus_365.Controllers
                 return NotFound();
             }
 
-            var empresa = await _context.Empresa
+            var nodeItem = await _context.NodeItem
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (empresa == null)
+            if (nodeItem == null)
             {
                 return NotFound();
             }
 
-            return View(empresa);
+            return View(nodeItem);
         }
 
-        // POST: Empresas/Delete/5
+        // POST: NodeItem/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var empresa = await _context.Empresa.FindAsync(id);
-            if (empresa != null)
+            var nodeItem = await _context.NodeItem.FindAsync(id);
+            if (nodeItem != null)
             {
-                _context.Empresa.Remove(empresa);
+                _context.NodeItem.Remove(nodeItem);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmpresaExists(int id)
+        private bool NodeItemExists(int id)
         {
-            return _context.Empresa.Any(e => e.Id == id);
+            return _context.NodeItem.Any(e => e.Id == id);
         }
     }
 }

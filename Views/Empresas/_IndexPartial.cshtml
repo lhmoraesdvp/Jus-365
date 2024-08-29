@@ -1,4 +1,19 @@
-﻿@model IEnumerable<Jus_365.Models.Empresa>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@inject UserManager<ApplicationUser> UserManager
+@inject IMenuService MenuService
+
+@{
+    var user = User.Identity.IsAuthenticated ? await UserManager.GetUserAsync(User) : null;
+    var roles = user != null ? await UserManager.GetRolesAsync(user) : new List<string>(); // Verifica se o usuário é nulo e inicializa a lista de roles
+
+    var menuItems = await MenuService.GetMenuItemsAsync(user); // Inicializa menuItems, considerando o caso onde user pode ser nulo
+}
+
+
+@model IEnumerable<Jus_365.Models.Empresa>
 
 @{
     ViewData["Title"] = "Index";

@@ -98,4 +98,31 @@ public class MenuController : Controller
         }
         return Ok("Success");
     }
+
+    // Método para carregar o conteúdo HTML para uma nova aba
+    [HttpGet]
+    public IActionResult LoadContent()
+    {
+        // Em um cenário real, você pode carregar o conteúdo com base no ID do banco de dados
+        // Aqui, vamos simplesmente retornar um arquivo HTML estático para o exemplo
+
+        // Você pode ajustar o caminho conforme a localização do arquivo HTML
+        //var filePath = "wwwroot/Conteudo/conteudo1.html";
+        //var content = System.IO.File.ReadAllText(filePath);
+
+        //return Content(content, "text/html");
+
+        var model =   _context.Empresa.ToList();// Obtenha seu modelo com base no ID
+
+        try
+        {
+            // Caminho relativo ou nome da partial view
+            return PartialView("~/Views/Empresas/_IndexPartial.cshtml", model);
+        }
+        catch (Exception ex)
+        {
+            // Log ou manipule a exceção conforme necessário
+            return StatusCode(500, "Erro ao carregar a partial view: " + ex.Message);
+        }
+    }
 }

@@ -173,31 +173,22 @@
             }
         });
     });
+    $('#jstree').on("select_node.jstree", function (e, data) {
+        // Obtenha o ID do nó selecionado
+        var selectedNodeId = data.node.id;
 
+        // Exiba um alert com o ID do nó
+        alert("Você selecionou o nó com ID: " + selectedNodeId);
+
+        // Aqui você pode adicionar outros comportamentos, como carregar conteúdo em uma div
+    });
 
     $(function () {
         var tabCounter = 2;
 
         $("#tabs").tabs();
 
-        $("#add-tab").on("click", function () {
-            var tabId = "tab-" + tabCounter;
-            var tabContent = "<p>Conteúdo da nova Tab " + tabCounter + "</p>";
 
-            // Adiciona a nova tab
-            $("<li><a href='#" + tabId + "'>Tab " + tabCounter + "</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>")
-                .appendTo("#tabs ul");
-            $("<div id='" + tabId + "'>" + tabContent + "</div>")
-                .appendTo("#tabs");
-
-            // Atualiza os tabs
-            $("#tabs").tabs("refresh");
-
-            // Seleciona a nova tab e inicia em modo de edição, se necessário
-            $("#tabs").tabs("option", "active", -1);
-
-            tabCounter++;
-        });
 
         // Função para fechar a tab ao clicar no ícone de fechar
         $("#tabs").on("click", "span.ui-icon-close", function () {
@@ -211,34 +202,60 @@
 
 
 
+   
 
-    $("#add-tab").on("click", function () {
-        var tabId = "tab-" + tabCounter;
 
-        // Exemplo de requisição AJAX para carregar o conteúdo do banco
-        $.ajax({
-            url: '/seu-controller/carregar-conteudo',
-            type: 'GET',
-            data: { id: tabCounter }, // Passe parâmetros se necessário
-            success: function (data) {
-                var tabContent = data; // Supondo que `data` seja o HTML retornado
 
-                // Adiciona a nova tab com o conteúdo carregado
-                $("<li><a href='#" + tabId + "'>Tab " + tabCounter + "</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>")
-                    .appendTo("#tabs ul");
-                $("<div id='" + tabId + "'>" + tabContent + "</div>")
-                    .appendTo("#tabs");
+    $(document).ready(function () {
+        var tabCounter = 1;
 
-                // Atualiza os tabs
-                $("#tabs").tabs("refresh");
-                $("#tabs").tabs("option", "active", -1);
-            },
-            error: function () {
-                alert("Erro ao carregar o conteúdo.");
-            }
+        $("#add-tab").on("click", function () {
+            console.log("teste");
+            tabCounter++;
+
+            var tabId = "tab-" + tabCounter;
+
+            // Exemplo de requisição AJAX para carregar o conteúdo do banco
+            $.ajax({
+                url: '/Menu/LoadContent', // URL corrigida
+                type: 'GET',
+                data: { id: tabCounter }, // Passe parâmetros se necessário
+                success: function (data) {
+                    var tabContent = data; // Supondo que `data` seja o HTML retornado
+                    console.log("#" + tabId);
+                    console.log($("#" + tabId).length);
+
+                    // Verifica se a aba já existe para evitar duplicação
+                    if ($("#" + tabId).length === 0) {
+                        // Adiciona a nova aba com o conteúdo carregado
+                        $("<li><a href='#" + tabId + "'>Tab " + tabCounter + "</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>")
+                            .appendTo("#tabs ul");
+
+                        $("<div id='" + tabId + "'>" + tabContent + "</div>")
+                            .appendTo("#tabs");
+
+                        // Atualiza os tabs
+                        $("#tabs").tabs("refresh");
+                    } else {
+                        // Caso a aba já exista, apenas exibe a aba
+                        $("#tabs").tabs("option", "active", $("#" + tabId).index());
+                    }
+
+                    // Seleciona a nova aba
+                    $("#tabs").tabs("option", "active", $("#" + tabId).index());
+                },
+                error: function () {
+                    alert("Erro ao carregar o conteúdo.");
+                }
+            });
+
         });
 
-        tabCounter++;
+        // Adiciona o evento para remover uma aba
+        $("#tabs").on("click", "span.ui-icon-close", function () {
+            var index = $(this).parent().index();
+            $("#tabs").tabs("remove", index);
+        });
     });
 
 
