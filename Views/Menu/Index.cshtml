@@ -2,13 +2,42 @@
     ViewData["Title"] = "Tree View";
 }
 
-<h1>Tree View</h1>
+@* <h1>Tree View</h1> *@
 
-<div id="jstree"></div>
+@* <div id="jstree-container">
+    <div id="jstree"></div>
+</div> *@
+
+
+
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
+<div class="row">
+    <!-- Coluna esquerda ocupando 1/3 da largura da tela -->
+    <div class="col-12 col-md-3" id="coluna-l">
+        <div id="jstree-container">
+            <div id="jstree"></div>
+        </div>
+    </div>
+
+    <!-- Coluna direita ocupando 2/3 da largura da tela -->
+    <div class="col-12 col-md-9" id="coluna-r">
+        <div id="tabs">
+            <ul>
+                <li><a href="#tab-1">Tab 1</a></li>
+            </ul>
+            <div id="tab-1">
+                <p>Conteúdo da Tab 1</p>
+            </div>
+        </div>
+        <button id="add-tab">Adicionar Nova Tab</button>
+    </div>
+</div>
+
 
 <script>
     $(document).ready(function () {
@@ -144,4 +173,74 @@
             }
         });
     });
+
+
+    $(function () {
+        var tabCounter = 2;
+
+        $("#tabs").tabs();
+
+        $("#add-tab").on("click", function () {
+            var tabId = "tab-" + tabCounter;
+            var tabContent = "<p>Conteúdo da nova Tab " + tabCounter + "</p>";
+
+            // Adiciona a nova tab
+            $("<li><a href='#" + tabId + "'>Tab " + tabCounter + "</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>")
+                .appendTo("#tabs ul");
+            $("<div id='" + tabId + "'>" + tabContent + "</div>")
+                .appendTo("#tabs");
+
+            // Atualiza os tabs
+            $("#tabs").tabs("refresh");
+
+            // Seleciona a nova tab e inicia em modo de edição, se necessário
+            $("#tabs").tabs("option", "active", -1);
+
+            tabCounter++;
+        });
+
+        // Função para fechar a tab ao clicar no ícone de fechar
+        $("#tabs").on("click", "span.ui-icon-close", function () {
+            var panelId = $(this).closest("li").remove().attr("aria-controls");
+            $("#" + panelId).remove();
+
+            // Atualiza os tabs
+            $("#tabs").tabs("refresh");
+        });
+    });
+
+
+
+
+    $("#add-tab").on("click", function () {
+        var tabId = "tab-" + tabCounter;
+
+        // Exemplo de requisição AJAX para carregar o conteúdo do banco
+        $.ajax({
+            url: '/seu-controller/carregar-conteudo',
+            type: 'GET',
+            data: { id: tabCounter }, // Passe parâmetros se necessário
+            success: function (data) {
+                var tabContent = data; // Supondo que `data` seja o HTML retornado
+
+                // Adiciona a nova tab com o conteúdo carregado
+                $("<li><a href='#" + tabId + "'>Tab " + tabCounter + "</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>")
+                    .appendTo("#tabs ul");
+                $("<div id='" + tabId + "'>" + tabContent + "</div>")
+                    .appendTo("#tabs");
+
+                // Atualiza os tabs
+                $("#tabs").tabs("refresh");
+                $("#tabs").tabs("option", "active", -1);
+            },
+            error: function () {
+                alert("Erro ao carregar o conteúdo.");
+            }
+        });
+
+        tabCounter++;
+    });
+
+
 </script>
+

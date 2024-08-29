@@ -1,0 +1,56 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%; /* Garante que o container ocupe 100% da largura da tela */
+    padding: 0; /* Remove padding interno */
+    margin: 0; /* Remove margem externa */
+    /*background-color: blue;*/ /* Cor de fundo para visualizar o container */
+}
+
+#jstree-container {
+    /*background-color: red;*/ /* Cor de fundo para visualizar a div */
+    max-width: 100%; /* Garante que o conteúdo dentro da coluna ocupe todo o espaço permitido */
+}
+
+#tabb {
+    background-color: purple; /* Cor de fundo para visualizar a div */
+    max-width: 100%;
+    min-height:300px;
+}
+
+#coluna-l {
+    /*background-color: forestgreen;*/ /* Cor de fundo para visualizar a div */
+    border:1px;
+}
+
+#coluna-r {
+    background-color: #D3D3D3; /* Cor de fundo para visualizar a div */
+}
+#dialog label, #dialog input {
+    display: block;
+}
+
+#dialog label {
+    margin-top: 0.5em;
+}
+
+#dialog input, #dialog textarea {
+    width: 95%;
+}
+
+#tabs {
+    margin-top: 1em;
+}
+
+    #tabs li .ui-icon-close {
+        float: left;
+        margin: 0.4em 0.2em 0 0;
+        cursor: pointer;
+    }
+
+#add_tab {
+    cursor: pointer;
+}
