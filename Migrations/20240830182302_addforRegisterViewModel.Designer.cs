@@ -4,6 +4,7 @@ using Jus_365.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Jus_365.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240830182302_addforRegisterViewModel")]
+    partial class addforRegisterViewModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -295,102 +298,9 @@ namespace Jus_365.Migrations
                     b.Property<string>("TelefoneResidencial")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("slot1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot10")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot11")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot12")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot4")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot5")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot6")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot7")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot8")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot9")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("FormRegisterViewModel");
-                });
-
-            modelBuilder.Entity("Jus_365.Models.FormularioLogin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("key")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot1")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot2")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot3")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot4")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot5")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot6")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot7")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot8")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot9")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FormularioLogin");
                 });
 
             modelBuilder.Entity("Jus_365.Models.JsTreeMenuItem", b =>
@@ -415,9 +325,6 @@ namespace Jus_365.Migrations
                     b.Property<string>("ParentId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("icon")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("obs")
                         .HasColumnType("nvarchar(max)");
 
@@ -428,12 +335,6 @@ namespace Jus_365.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("obsInt2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("tipo_no")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("type")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id_Item");

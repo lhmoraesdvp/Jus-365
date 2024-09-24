@@ -21,6 +21,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 [Authorize(Roles = "Admin")]
 public class RoleController : Controller
 {
+    
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly ApplicationDbContext _context;
@@ -166,7 +167,7 @@ public class RoleController : Controller
         {
             return NotFound();
         }
-        var planos = _context.Planos.Where(c => c.Description == role.Name).ToList();
+        var planos = _context.Plano.Where(c => c.Description == role.Name).ToList();
         if (planos == null && !planos.Any())
         {
 
@@ -190,7 +191,7 @@ public class RoleController : Controller
         }
       
     }
-
+    
        
     }
 

@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Jus_365.Models.FormularioLogin>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    .container {
+        margin-top: 20px;
+    }
+
+    /* Reduz a espessura da linha da tabela */
+    table {
+        border-collapse: collapse;
+        margin-bottom: 0; /* Remove espaçamento extra embaixo da tabela */
+    }
+
+    th, td {
+        border: 1px solid #ccc; /* Cor da borda das células */
+        font-size: 12px; /* Tamanho da fonte */
+        padding: 1px 3px !important; /* Reduz ainda mais o espaçamento e usa !important para garantir a aplicação */
+        line-height: 1 !important; /* Ajusta o espaçamento entre as linhas do texto */
+        height: auto !important; /* Garante que a altura seja definida automaticamente */
+    }
+
+    /* Estilo para o cabeçalho da tabela */
+    thead th {
+        font-size: 12px; /* Tamanho da fonte do cabeçalho */
+        border-width: 1px; /* Espessura da borda do cabeçalho */
+        padding: 1px 3px !important; /* Reduz o espaçamento no cabeçalho */
+        line-height: 1 !important; /* Remove espaçamento extra vertical */
+    }
+
+    /* Botões menores */
+    /* Botões menores */
+    .btn-sm {
+        font-size: 12px;
+        padding: 2px 5px !important; /* Reduz o espaçamento dentro do botão */
+        height: 24px; /* Define uma altura fixa para o botão */
+        line-height: 1.2; /* Ajusta o espaçamento interno do texto */
+    }
+</style>
+
+
+
+
+    <div class="container mt-4">
+
+        <div class="mb-3">
+            <button class="btn btn-primary btn-sm" url="/FormularioLogin/Create" caminho="~/Views/FormularioLogin/_CreatePartial.cshtml" idContent="1" id="insertbutton">
+                Cadastrar Novo
+            </button>
+        </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.key)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.nome)
+                    </th>
+
+                  
+                 
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.key)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.nome)
+                        </td>
+                  
+                        <td>
+                            <button class="btn btn-warning btn-sm"  url="/FormularioLogin/Edit" caminho="~/Views/FormularioLogin/_EditPartial.cshtml" idContent="@item.key" id="editContent">Editar</button>
+
+                            
+                            <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

@@ -10,22 +10,22 @@ using Jus_365.Models;
 
 namespace Jus_365.Controllers
 {
-    public class NodeItemController : Controller
+    public class FormularioLoginController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public NodeItemController(ApplicationDbContext context)
+        public FormularioLoginController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: NodeItem
-        public async Task<IActionResult> Index()
+        // GET: FormularioLogin
+        public async Task<IActionResult> Index(string id, string CaminhoView)
         {
-            return View(await _context.NodeItem.ToListAsync());
+           return PartialView (CaminhoView,await _context.FormularioLogin.ToListAsync());
         }
 
-        // GET: NodeItem/Details/5
+        // GET: FormularioLogin/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,62 +33,63 @@ namespace Jus_365.Controllers
                 return NotFound();
             }
 
-            var nodeItem = await _context.NodeItem
+            var formularioLogin = await _context.FormularioLogin
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (nodeItem == null)
+            if (formularioLogin == null)
             {
                 return NotFound();
             }
 
-            return View(nodeItem);
+            return View(formularioLogin);
         }
 
-        // GET: NodeItem/Create
-        public IActionResult Create()
+        // GET: FormularioLogin/Create
+        public IActionResult Create(string id, string CaminhoView)
         {
-            return View();
+            return PartialView(CaminhoView);
         }
 
-        // POST: NodeItem/Create
+        // POST: FormularioLogin/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Id_No,caminho,Obs1,Obs2,Obs3")] NodeItem nodeItem)
+     
+        public async Task<IActionResult> Create([FromBody] FormularioLogin formularioLogin)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(nodeItem);
+                _context.Add(formularioLogin);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(nodeItem);
+            return View(formularioLogin);
         }
 
-        // GET: NodeItem/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: FormularioLogin/Edit/5
+        public async Task<IActionResult> Edit(string id, string CaminhoView)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var nodeItem = await _context.NodeItem.FindAsync(id);
-            if (nodeItem == null)
+            var formularioLogin = await _context.FormularioLogin.Where(c=>c.key==id).FirstOrDefaultAsync();
+            if (formularioLogin == null)
             {
                 return NotFound();
             }
-            return View(nodeItem);
+            return PartialView(CaminhoView, formularioLogin);
+
         }
 
-        // POST: NodeItem/Edit/5
+        // POST: FormularioLogin/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Id_No,caminho,Obs1,Obs2,Obs3")] NodeItem nodeItem)
+        public async Task<IActionResult> Edit([FromBody] FormularioLogin formularioLogin)
         {
-            if (id != nodeItem.Id)
+            if (_context.FormularioLogin.Where(C=>C.Id== formularioLogin.Id).FirstOrDefault()!=null)
             {
                 return NotFound();
             }
@@ -97,12 +98,12 @@ namespace Jus_365.Controllers
             {
                 try
                 {
-                    _context.Update(nodeItem);
+                    _context.Update(formularioLogin);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NodeItemExists(nodeItem.Id))
+                    if (!FormularioLoginExists(formularioLogin.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +114,10 @@ namespace Jus_365.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(nodeItem);
+            return View(formularioLogin);
         }
 
-        // GET: NodeItem/Delete/5
+        // GET: FormularioLogin/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,50 +125,34 @@ namespace Jus_365.Controllers
                 return NotFound();
             }
 
-            var nodeItem = await _context.NodeItem
+            var formularioLogin = await _context.FormularioLogin
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (nodeItem == null)
+            if (formularioLogin == null)
             {
                 return NotFound();
             }
 
-            return View(nodeItem);
+            return View(formularioLogin);
         }
 
-        // POST: NodeItem/Delete/5
+        // POST: FormularioLogin/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var nodeItem = await _context.NodeItem.FindAsync(id);
-            if (nodeItem != null)
+            var formularioLogin = await _context.FormularioLogin.FindAsync(id);
+            if (formularioLogin != null)
             {
-                _context.NodeItem.Remove(nodeItem);
+                _context.FormularioLogin.Remove(formularioLogin);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        [HttpPost]
-        public IActionResult GetNodeDetails(int Id)
+
+        private bool FormularioLoginExists(int id)
         {
-            if (Id == null || Id <= 0)
-            {
-                return BadRequest("ID inválido.");
-            }
-
-            // Supondo que NodeRequestModel tenha uma propriedade 'Id'
-            var model = _context.NodeItem.Where(c => c.Id_No == Id).ToList();
-
-            // Retorna um JSON com os dados que você precisa
-            return Json(model);
+            return _context.FormularioLogin.Any(e => e.Id == id);
         }
-        private bool NodeItemExists(int id)
-        {
-            return _context.NodeItem.Any(e => e.Id == id);
-        }
-
- 
-
     }
 }

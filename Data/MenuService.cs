@@ -32,6 +32,8 @@ public class MenuService : IMenuService
             menuItems.Add(new MenuItem { Name = "Empresas", Url = "/Empresas" });
             menuItems.Add(new MenuItem { Name = "Menu", Url = "/Menu" });
             menuItems.Add(new MenuItem { Name = "Nodes", Url = "/NodeItem" });
+            menuItems.Add(new MenuItem { Name = "FormularioLogin", Url = "/FormularioLogin" });
+
 
 
 

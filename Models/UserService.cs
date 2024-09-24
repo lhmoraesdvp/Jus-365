@@ -14,7 +14,7 @@ namespace Jus_365.Models
             _roleManager = roleManager;
         }
 
-        public async Task<List<UserWithRolesViewModel>> GetAllUsersWithRolesAsync()
+        public async Task<List<UserWithRolesViewModel>> ToList()
         {
             var users = await _userManager.Users.ToListAsync();
             var userWithRolesList = new List<UserWithRolesViewModel>();

@@ -1,4 +1,7 @@
-﻿@model UserWithRolesViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@model UserWithRolesViewModel
 
 <h2>Edit Roles for @Model.UserName</h2>
 
@@ -11,6 +14,8 @@
         </select>
         <span asp-validation-for="SelectedRoles" class="text-danger"></span>
     </div>
+   
+    <button class="btn btn-primary" url="/Users/EditRoles" caminho="~/Views/Users/_IndexPartial.cshtml" idContent="@Model.UserId" id="saveContent">Salvar Conteúdo</button>
 
-    <button type="submit" class="btn btn-primary">Save</button>
+
 </form>

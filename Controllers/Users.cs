@@ -22,10 +22,10 @@ namespace Jus_365.Controllers
             _roleManager = roleManager;
         }
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string id, string CaminhoView)
         {
-            var usersWithRoles = await _userService.GetAllUsersWithRolesAsync();
-            return View( usersWithRoles);
+            var usersWithRoles = await _userService.ToList();
+            return PartialView (CaminhoView,usersWithRoles);
         }
 
         // GET: Users/Details/5
@@ -100,7 +100,7 @@ namespace Jus_365.Controllers
 
 
         // GET: User/Edit/5
-        public async Task<IActionResult> EditRoles(string id)
+        public async Task<IActionResult> EditRoles(string id, string CaminhoView )
         {
 
 
@@ -122,37 +122,48 @@ namespace Jus_365.Controllers
                 }).ToList(),
                 SelectedRoles = await _userManager.GetRolesAsync(user)
             };
+           
+            return PartialView(CaminhoView, model);
 
-            return View(model);
         }
 
         // POST: User/EditRoles
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditRoles(UserWithRolesViewModel model)
+   
+        public async Task<IActionResult> EditRoles(UserWithRolesViewModel model, string caminhoredirect)
         {
-            var user = await _userManager.FindByIdAsync(model.UserId);
+            var user =  _userManager.Users.Where(c=>c.Id==model.UserId).FirstOrDefault();
+            if (!Request.Headers["X-Requested-With"].Equals("XMLHttpRequest"))
+            {
+                return BadRequest("Este método só pode ser acessado por AJAX.");
+            }
             if (user == null)
             {
                 return NotFound();
             }
-
+            
             var currentRoles = await _userManager.GetRolesAsync(user);
             var result = await _userManager.RemoveFromRolesAsync(user, currentRoles);
             if (!result.Succeeded)
             {
-                AddErrors(result);
-                return View(model);
-            }
+                     AddErrors(result);
+               return View(caminhoredirect,model);
 
-            result = await _userManager.AddToRolesAsync(user, model.SelectedRoles);
-            if (!result.Succeeded)
+            }
+         
+            
+
+         var    result2 = await _userManager.AddToRolesAsync(user, model.SelectedRoles);
+         if (!result2.Succeeded)
             {
                 AddErrors(result);
-                return View(model);
+                return View(caminhoredirect,model);
             }
+            
+            var usersWithRoles = await _userService.ToList();
+            return PartialView("~/Views/Users/_IndexPartial.cshtml", usersWithRoles);
 
-            return RedirectToAction(nameof(Index)); // Substitua "Index" com a ação que exibe a lista de usuários.
+           
         }
         private void AddErrors(IdentityResult result)
         {

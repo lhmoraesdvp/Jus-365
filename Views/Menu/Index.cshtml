@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Tree View";
 }
+@model IEnumerable<NodeItem>
 
 @* <h1>Tree View</h1> *@
 
@@ -16,11 +17,27 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
-<div class="row">
+<div class="row no-gutters">
     <!-- Coluna esquerda ocupando 1/3 da largura da tela -->
     <div class="col-12 col-md-3" id="coluna-l">
         <div id="jstree-container">
-            <div id="jstree"></div>
+            <div id="accordion">
+                <h3>Section 1</h3>
+                <div>
+                    <div id="jstree"></div>
+                </div>
+                <h3>Section 2</h3>
+                <div>
+                    <p>
+                        Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+                        purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+                        velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+                        suscipit faucibus urna.
+                    </p>
+                </div>
+
+            </div>
+         
         </div>
     </div>
 
@@ -34,18 +51,25 @@
                 <p>Conteúdo da Tab 1</p>
             </div>
         </div>
-        <button id="add-tab">Adicionar Nova Tab</button>
+        @* <button id="add-tab">Adicionar Nova Tab</button> *@
+        <br />
+        <br />
     </div>
 </div>
 
 
 <script>
+
+     $( function() {
+    $( "#accordion" ).accordion();
+  } );
+
+
     $(document).ready(function () {
         $('#jstree').jstree({
             "core": {
                 "animation": 0,
                 "check_callback": true,
-                "themes": { "stripes": true },
                 'data': {
                     'url': function (node) {
                         return node.id === '#' ? '/Menu/GetRootNodes' : '/Menu/GetChildNodes?id=' + node.id;
@@ -77,110 +101,414 @@
             "contextmenu": {
                 "items": function ($node) {
                     var tree = $("#jstree").jstree(true);
-                    return {
-                        "Create": {
-                            "label": "Criar",
-                            "action": function () {
-                                var parentId = $node.id;
-                                var nodeName = "Novo Nó";  // Nome temporário para o novo nó
+                    if ($node.original.type != "admin") {
+                        return {
+                            "Create": {
+                                "label": "Criar",
+                                "action": function () {
+                                    var parentId = $node.id;
+                                    var nodeName = "Novo Nó";  // Nome temporário para o novo nó
 
-                                var newNode = { Name: nodeName, ParentId: parentId };
-                                $.ajax({
-                                    url: '/Menu/CreateNode',
-                                    type: 'POST',
-                                    contentType: 'application/json',
-                                    data: JSON.stringify(newNode),
-                                    success: function (data) {
-                                        var tree = $('#jstree').jstree(true);
-
-                                        // Adiciona o nó na árvore e utiliza o callback para iniciar a edição
-                                        var newNodeId = tree.create_node(parentId, {
-                                            id: data.id, // Usa o ID retornado pelo servidor
-                                            text: nodeName,
-                                            state: { opened: true }
-                                        }, "last", function (newNode) {
-                                            // Seleciona e edita o nó recém-criado
-                                            if (newNode) {
-                                                tree.deselect_all();
-                                                tree.select_node(newNode);
-                                                tree.edit(newNode, null, function (node, status, canceled) {
-                                                    if (!canceled && node.text !== nodeName) {
-                                                        // Chama o controlador de renomeação após o nó ser renomeado pelo usuário
-                                                        $.ajax({
-                                                            url: '/Menu/RenameNode',
-                                                            type: 'POST',
-                                                            contentType: 'application/json',
-                                                            data: JSON.stringify({ id: node.id, Name: node.text }),
-                                                            success: function () {
-                                                                console.log("Nó renomeado com sucesso.");
-                                                            },
-                                                            error: function () {
-                                                                alert("Erro ao renomear o nó.");
-                                                            }
-                                                        });
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    },
-                                    error: function () {
-                                        alert("Erro ao criar o nó.");
-                                    }
-                                });
-                            }
-                        },
-                        "Rename": {
-                            "label": "Renomea",
-                            "action": function () {
-                                tree.edit($node, null, function (node) {
-                                    var updatedNode = { Id: node.id, Name: node.text };
+                                    var newNode = { Name: nodeName, ParentId: parentId };
                                     $.ajax({
-                                        url: '/Menu/RenameNode',
+                                        url: '/Menu/CreateNode',
                                         type: 'POST',
                                         contentType: 'application/json',
-                                        data: JSON.stringify(updatedNode),
-                                        success: function () {
-                                            console.log("Nó renomeado com sucesso");
-                                            $('#jstree').jstree(true).refresh();
-                                        }
-                                    });
-                                });
-                            }
-                        },
-                        "Delete": {
-                            "label": "Excluir",
-                            "action": function (obj) {
-                                if (confirm("Tem certeza de que deseja excluir este item?")) {
-                                    var nodeId = $node.id;
-                                    console.log("ID do nó a ser excluído:", nodeId);
-                                    $.ajax({
-                                        url: '@Url.Action("DeleteNode", "Menu")',
-                                        type: 'POST',
-                                        data: { id: nodeId },
-                                        success: function () {
-                                            alert("Item excluido com sucesso.");
-                                            $('#jstree').jstree(true).refresh();
+                                        data: JSON.stringify(newNode),
+                                        success: function (data) {
+                                            var tree = $('#jstree').jstree(true);
+
+                                            // Adiciona o nó na árvore e utiliza o callback para iniciar a edição
+                                            var newNodeId = tree.create_node(parentId, {
+                                                id: data.id, // Usa o ID retornado pelo servidor
+                                                text: nodeName,
+                                                state: { opened: true }
+                                            }, "last", function (newNode) {
+                                                // Seleciona e edita o nó recém-criado
+                                                if (newNode) {
+                                                    tree.deselect_all();
+                                                    tree.select_node(newNode);
+                                                    tree.edit(newNode, null, function (node, status, canceled) {
+                                                        if (!canceled && node.text !== nodeName) {
+                                                            // Chama o controlador de renomeação após o nó ser renomeado pelo usuário
+                                                            $.ajax({
+                                                                url: '/Menu/RenameNode',
+                                                                type: 'POST',
+                                                                contentType: 'application/json',
+                                                                data: JSON.stringify({ id: node.id, Name: node.text }),
+                                                                success: function () {
+                                                                    console.log("Nó renomeado com sucesso.");
+                                                                },
+                                                                error: function () {
+                                                                    alert("Erro ao renomear o nó.");
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
                                         },
                                         error: function () {
-                                            alert("Erro ao excluir o item.");
+                                            alert("Erro ao criar o nó.");
                                         }
                                     });
                                 }
+                            },
+                            "Rename": {
+                                "label": "Renomea",
+                                "action": function () {
+                                    tree.edit($node, null, function (node) {
+                                        var updatedNode = { Id: node.id, Name: node.text };
+                                        $.ajax({
+                                            url: '/Menu/RenameNode',
+                                            type: 'POST',
+                                            contentType: 'application/json',
+                                            data: JSON.stringify(updatedNode),
+                                            success: function () {
+                                                console.log("Nó renomeado com sucesso");
+                                                $('#jstree').jstree(true).refresh();
+                                            }
+                                        });
+                                    });
+                                }
+                            },
+                            "Delete": {
+                                "label": "Excluir",
+                                "action": function (obj) {
+                                    if (confirm("Tem certeza de que deseja excluir este item?")) {
+                                        var nodeId = $node.id;
+                                        console.log("ID do nó a ser excluído:", nodeId);
+                                        $.ajax({
+                                            url: '@Url.Action("DeleteNode", "Menu")',
+                                            type: 'POST',
+                                            data: { id: nodeId },
+                                            success: function () {
+                                                alert("Item excluido com sucesso.");
+                                                $('#jstree').jstree(true).refresh();
+                                            },
+                                            error: function () {
+                                                alert("Erro ao excluir o item.");
+                                            }
+                                        });
+                                    }
+                                }
                             }
-                        }
-                    };
+                        };
+                }
                 }
             }
         });
     });
     $('#jstree').on("select_node.jstree", function (e, data) {
-        // Obtenha o ID do nó selecionado
-        var selectedNodeId = data.node.id;
 
-        // Exiba um alert com o ID do nó
-        alert("Você selecionou o nó com ID: " + selectedNodeId);
 
-        // Aqui você pode adicionar outros comportamentos, como carregar conteúdo em uma div
+      
+       
+
+        var nodeId = data.node.id
+
+        var selectedNode = data.node;
+        var nodetipo = selectedNode.original.tipo_no;
+        console.log("nodetipo " + nodetipo);
+        if (nodetipo == "2") {
+
+
+
+
+
+     
+
+        // Acesse a propriedade adicional 'obs'
+        var nodeObs = selectedNode.original.obs;
+        var nodetipo = selectedNode.original.obsInt;
+        console.log("nodetipo " + nodetipo);
+
+        console.log("nodeObs " + nodeObs);
+        console.log("Nó selecionado com ID: " + nodeId);
+   
+            console.log("View de usuario");
+
+            console.log("Obs: " + nodeObs);
+            var url = nodeObs;
+            var caminho = selectedNode.original.obs2;
+            console.log("Caminho " + caminho);
+            var selectedNodeId = data.node.id;
+            var tabId = "tab-" + selectedNodeId;
+            var tabLabel = "Tab " + selectedNodeId;
+
+            if ($("#" + tabId).length === 0) {
+                $("<li><a href='#" + tabId + "'>" + tabLabel + "</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>")
+                    .appendTo("#tabs ul");
+
+                $("<div id='" + tabId + "'></div>")
+                    .appendTo("#tabs");
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: { id: "1234-5678-ABCD-EFGH", CaminhoView: caminho },
+                    success: function (response) {
+                        $("#" + tabId).html(response);
+
+
+                    posload(nodetipo);
+
+                        console.log("Conteúdo carregado com sucesso.");
+
+
+                    },
+                    error: function (xhr, status, error) {
+                        var msg = "Erro ao carregar conteúdo: " + xhr.status + " " + xhr.statusText;
+                        $("#" + tabId).html(msg);
+                        console.error("Erro ao carregar conteúdo: ", error);
+                    }
+                });
+
+                $("#tabs").tabs("refresh");
+                $("#tabs").tabs("option", "active", $("#" + tabId).index());
+            } else {
+                $("#tabs").tabs("option", "active", $("#" + tabId).index());
+            }
+
+        }
+
+    });
+    $(document).on('click', '#editContent', function () {
+        // Obtém o ID da aba ativa
+        var tabId = $("#tabs .ui-tabs-active").attr("aria-controls");
+     
+        
+
+        console.log("tabid " + tabId);
+        var url = $(this).attr('url');
+        var caminho = $(this).attr('caminho');
+        console.log("Caminho " + caminho);
+
+        var idContent = $(this).attr('idContent');
+        console.log("idContent " + idContent);
+
+        console.log("URL " + url);
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: { id: idContent, CaminhoView: caminho },
+            success: function (response) {
+                $("#" + tabId).html(response);
+
+
+                console.log("Conteúdo carregado com sucesso.");
+            },
+            error: function (xhr, status, error) {
+                var msg = "Erro ao carregar conteúdo: " + xhr.status + " " + xhr.statusText;
+                $("#" + tabId).html(msg);
+                console.error("Erro ao carregar conteúdo: ", error);
+            }
+        });
+    });
+    $(document).on('click', '#insertbutton', function () {
+        // Obtém o ID da aba ativa
+        var tabId = $("#tabs .ui-tabs-active").attr("aria-controls");
+
+
+
+        console.log("tabid " + tabId);
+        var url = $(this).attr('url');
+        var caminho = $(this).attr('caminho');
+        console.log("Caminho " + caminho);
+
+        var idContent = $(this).attr('idContent');
+        console.log("idContent " + idContent);
+
+        console.log("URL " + url);
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: { id: idContent, CaminhoView: caminho },
+            success: function (response) {
+                $("#" + tabId).html(response);
+                console.log("Conteúdo carregado com sucesso.");
+            },
+            error: function (xhr, status, error) {
+                var msg = "Erro ao carregar conteúdo: " + xhr.status + " " + xhr.statusText;
+                $("#" + tabId).html(msg);
+                console.error("Erro ao carregar conteúdo: ", error);
+            }
+        });
+    });
+
+    $(document).on('click', '#saveContent', function () {
+        // Obtém o ID da aba ativa
+        event.preventDefault(); //
+        var tabId = $("#tabs .ui-tabs-active").attr("aria-controls");
+
+        var idContent = $(this).attr('idContent');
+
+
+        console.log("tabid " + tabId);
+        var url = $(this).attr('url');
+        if (url == "/FormRegisterViewModels/Create"){
+            console.log("usuario");
+
+            // Obtém os valores dos campos do formulário
+            var nome = $('#NomeCompleto').val() || null;
+            var sexo = $('#Sexo').val() || null;
+            var dataNascimento = $('#DataNascimento').val() || null;
+
+            //contato pessoal
+            var Email = $('#Email').val() || null;
+            var TelefoneCelular = $('#TelefoneCelular').val() || null;
+            var TelefoneResidencial = $('#TelefoneResidencial').val() || null;
+            var OutroTelefone = $('#OutroTelefone').val() || null;
+
+
+            //endereço pessoal
+
+            var Cep = $('#Cep').val() || null;
+            var Estado = $('#Estado').val() || null;
+            var Cidade = $('#Cidade').val() || null;
+            var Logradouro = $('#Logradouro').val() || null;
+            var Numero = $('#Numero').val() || null;
+            var Complemento = $('#Complemento').val() || null;
+
+
+
+
+            // Documentos pessoais
+            var cpf = $('#CPF').val() || null;
+            var rg = $('#RG').val() || null;
+            var dataExpedicaoRG = $('#DataExpedicaoRG').val() || null;
+            var orgaoExpedicaoRG = $('#OrgaoExpedicaoRG').val() || null;
+            var cnh = $('#CNH').val() || null;
+            var dataValidadeCNH = $('#DataValidadeCNH').val() || null;
+            var estadoExpedidorCNH = $('#EstadoExpedidorCNH').val() || null;
+
+            // Arquivos
+            var arquivo1 = $('#Arquivo1').val() || null;
+            var arquivo2 = $('#Arquivo2').val() || null;
+            var arquivo3 = $('#Arquivo3').val() || null;
+            var arquivo4 = $('#Arquivo4').val() || null;
+            var arquivo5 = $('#Arquivo5').val() || null;
+
+            // Dados da Empresa
+            var cpfCnpj = $('#CPFCNPJ').val() || null;
+            var razaoSocial = $('#RazaoSocial').val() || null;
+            var inscricaoEstadual = $('#InscricaoEstadual').val() || null;
+            var telefoneEmpresa = $('#TelefoneEmpresa').val() || null;
+            var emailEmpresa = $('#EmailEmpresa').val() || null;
+            var inscricaoMunicipal = $('#InscricaoMunicipal').val() || null;
+            var certificado = $('#Certificado').val() || null;
+            var planos = $('#Planos').val() || null;
+
+            // Endereço Empresarial
+            var cepEmpresa = $('#CEPEmpresa').val() || null;
+            var estadoEmpresa = $('#EstadoEmpresa').val() || null;
+            var cidadeEmpresa = $('#CidadeEmpresa').val() || null;
+            var logradouroEmpresa = $('#LogradouroEmpresa').val() || null;
+            var numeroEmpresa = $('#NumeroEmpresa').val() || null;
+            var complementoEmpresa = $('#ComplementoEmpresa').val() || null;
+
+
+            //login
+            var LoginEmail = $('#LoginEmail').val() || null;
+            var Senha = $('#Senha').val() || null;
+
+
+
+
+            // Cria um objeto com os dados
+            var data = {
+
+                NomeCompleto: nome,
+                Sexo: sexo,
+                DataNascimento: dataNascimento,
+
+                // Contato pessoal
+                Email: Email,
+                TelefoneCelular: TelefoneCelular,
+                TelefoneResidencial: TelefoneResidencial,
+                OutroTelefone: OutroTelefone,
+
+                // Endereço pessoal
+                Cep: Cep,
+                Estado: Estado,
+                Cidade: Cidade,
+                Logradouro: Logradouro,
+                Numero: Numero,
+                Complemento: Complemento,
+
+                // Documentos pessoais
+                Cpf: cpf,
+                Rg: rg,
+                DataExpedicaoRG: dataExpedicaoRG,
+                OrgaoExpedicaoRG: orgaoExpedicaoRG,
+                Cnh: cnh,
+                DataValidadeCNH: dataValidadeCNH,
+                EstadoExpedidorCNH: estadoExpedidorCNH,
+
+                // Arquivos
+                Arquivo1: arquivo1,
+                Arquivo2: arquivo2,
+                Arquivo3: arquivo3,
+                Arquivo4: arquivo4,
+                Arquivo5: arquivo5,
+
+                // Dados da Empresa
+                CPFCNPJ: cpfCnpj,
+                RazaoSocial: razaoSocial,
+                InscricaoEstadual: inscricaoEstadual,
+                TelefoneEmpresa: telefoneEmpresa,
+                EmailEmpresa: emailEmpresa,
+                InscricaoMunicipal: inscricaoMunicipal,
+                Certificado: certificado,
+
+                // Plano
+                Planos: planos,
+
+
+                // Endereço Empresarial
+                CEPEmpresa: cepEmpresa,
+                EstadoEmpresa: estadoEmpresa,
+                CidadeEmpresa: cidadeEmpresa,
+                LogradouroEmpresa: logradouroEmpresa,
+                NumeroEmpresa: numeroEmpresa,
+                ComplementoEmpresa: complementoEmpresa,
+
+                //login
+                LoginEmail: LoginEmail,
+                Senha: Senha
+            };
+
+            console.log(data);
+
+            console.log("Nome " + data.NomeCompleto);
+            console.log("Email " + data.Email);
+            console.log("Email " + data.Email);
+
+
+            // Envia o formulário via AJAX
+            $.ajax({
+                url: url, // Pega a URL do atributo asp-action
+                type: 'POST', // Método HTTP
+                contentType: 'application/json', // Tipo de conteúdo
+                data: JSON.stringify(data), // Converte os dados para JSON
+                processData: false, // Não processar os dados
+                success: function (response) {
+                    console.log('Sucesso:', response);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Erro:', error);
+                }
+           });
+        
+          
+
+        }else{
+            console.log("outros");
+
+        }
+      
     });
 
     $(function () {
@@ -202,7 +530,11 @@
 
 
 
-   
+    function minhaFuncao( parametro2) {
+        // Código que a função vai executar
+        console.log("Parâmetro 1:", parametro1);
+      
+    }
 
 
 
@@ -257,7 +589,100 @@
             $("#tabs").tabs("remove", index);
         });
     });
+    function posload(type){
 
+        switch (type)   {
+
+            case "1":
+                var slot1 = document.getElementById("slot1Value").value;
+                var slot2 = document.getElementById("slot2Value").value;
+                var slot3 = document.getElementById("slot3Value").value;
+                var slot4 = document.getElementById("slot4Value").value;
+                var slot5 = document.getElementById("slot5Value").value;
+                var slot6 = document.getElementById("slot6Value").value;
+                var slot7 = document.getElementById("slot7Value").value;
+                var slot8 = document.getElementById("slot8Value").value;
+                var slot9 = document.getElementById("slot9Value").value;
+
+
+                if (slot1 != "0") {
+                    carregaSlot(slot1, "slot1");
+                }
+                if (slot2 != "0") {
+                    carregaSlot(slot2, "slot2");
+                }
+                if (slot3 != "0") {
+                    carregaSlot(slot3, "slot3");
+                }
+                if (slot4 != "0") {
+                    carregaSlot(slot4, "slot4");
+                }
+                if (slot5 != "0") {
+                    carregaSlot(slot5, "slot5");
+                }
+                if (slot6 != "0") {
+                    carregaSlot(slot6, "slot6");
+                }
+                if (slot7 != "0") {
+                    carregaSlot(slot7, "slot7");
+                }
+                if (slot8 != "0") {
+                    carregaSlot(slot8, "slot8");
+                }
+                if (slot9 != "0") {
+                    carregaSlot(slot9, "slot9");
+                }
+   
+                break;
+
+            case "2":
+
+                console.log("Outros!!!");
+                break;
+
+
+        }
+
+
+    }
+
+    function carregaSlot(caminho,slot) {
+        console.log("Caminho " + caminho);
+        console.log("slot " + slot);
+
+        if (caminho != null && caminho != undefined && caminho!="") {
+            console.log("1Caminho " + caminho);
+
+            // Função para carregar o conteúdo HTML
+            function loadHtmlContent(url, containerId) {
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            console.log('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(html => {
+                        document.getElementById(containerId).innerHTML = html;
+                        console.log("HTML content loaded into: " + containerId);
+
+                        // Aqui você pode colocar qualquer outro código JS que precise ser executado após o conteúdo ser carregado
+                        // Por exemplo, se você precisar inicializar algum plugin ou anexar eventos a elementos recém-carregados
+                    })
+                    .catch(error => {
+                        console.log('Error loading HTML content:', error);
+                    });
+            }
+
+            console.log("carregamndo conteudo"  );
+            console.log("Caminho " + caminho);
+            console.log("slot " + slot)
+            // Carregar o conteúdo HTML do arquivo
+            loadHtmlContent(caminho,slot);
+        } else {
+            console.log("Slot nulo");
+        }
+    }
 
 </script>
 

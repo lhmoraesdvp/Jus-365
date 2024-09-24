@@ -1,0 +1,41 @@
+﻿<h3>Endereço Empresarial</h3>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label asp-for="CEPEmpresa" class="control-label">CEP</label>
+            <input asp-for="CEPEmpresa" id="CEPEmpresa" class="form-control" />
+            <span asp-validation-for="CEPEmpresa" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EstadoEmpresa" class="control-label">Estado</label>
+            <select asp-for="EstadoEmpresa" id="EstadoEmpresa" class="form-control">
+                <option value="">Selecione...</option>
+                <!-- Adicionar opções de estados aqui -->
+            </select>
+            <span asp-validation-for="EstadoEmpresa" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CidadeEmpresa" class="control-label">Cidade</label>
+            <select asp-for="CidadeEmpresa" id="CidadeEmpresa" class="form-control">
+                <option value="">Selecione...</option>
+                <!-- Adicionar opções de cidades aqui -->
+            </select>
+            <span asp-validation-for="CidadeEmpresa" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="LogradouroEmpresa" class="control-label">Logradouro</label>
+            <input asp-for="LogradouroEmpresa" id="LogradouroEmpresa" class="form-control" />
+            <span asp-validation-for="LogradouroEmpresa" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="NumeroEmpresa" class="control-label">Número</label>
+            <input asp-for="NumeroEmpresa" id="NumeroEmpresa" class="form-control" />
+            <span asp-validation-for="NumeroEmpresa" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ComplementoEmpresa" class="control-label">Complemento</label>
+            <input asp-for="ComplementoEmpresa" id="ComplementoEmpresa" class="form-control" />
+            <span asp-validation-for="ComplementoEmpresa" class="text-danger"></span>
+        </div>
+    </div>
+</div>

@@ -13,12 +13,15 @@ namespace Jus_365.Data
         {
             
         }
-        public DbSet<Plano> Planos { get; set; } // DbSet para a tabela de planos
+
         public DbSet<Empresa> Empresa { get; set; } // DbSet para a tabela de Empresa
         public DbSet<Models.JsTreeMenuItem> JsTreeMenuItem { get; set; } // DbSet para a tabela de Empresa
 
         public DbSet<Models.NodeItem> NodeItem { get; set; } // DbSet para a tabela de Empresa
 
+        public DbSet<Plano> Plano { get; set; } // DbSet para a tabela de planos
+        public DbSet<FormRegisterViewModel> FormRegisterViewModel { get; set; } // DbSet para a tabela de planos
+        public DbSet<FormularioLogin> FormularioLogin { get; set; } // DbSet para a tabela de planos
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

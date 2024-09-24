@@ -1,0 +1,464 @@
+﻿@using System.Text.Json
+@model Jus_365.Models.FormRegisterViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    <input type="hidden" id="slot1Value" name="meuCampoInvisivel" value=@Model.slot1 ?? string.Empty;>
+    <input type="hidden" id="slot2Value" name="meuCampoInvisivel" value=@Model.slot2 ?? string.Empty;>
+    <input type="hidden" id="slot3Value" name="meuCampoInvisivel" value=@Model.slot3 ?? string.Empty;>
+    <input type="hidden" id="slot4Value" name="meuCampoInvisivel" value=@Model.slot4 ?? string.Empty;>
+    <input type="hidden" id="slot5Value" name="meuCampoInvisivel" value=@Model.slot5 ?? string.Empty;>
+    <input type="hidden" id="slot6Value" name="meuCampoInvisivel" value=@Model.slot6 ?? string.Empty;>
+    <input type="hidden" id="slot7Value" name="meuCampoInvisivel" value=@Model.slot7 ?? string.Empty;>
+    <input type="hidden" id="slot8Value" name="meuCampoInvisivel" value=@Model.slot8 ?? string.Empty;>
+    <input type="hidden" id="slot9Value" name="meuCampoInvisivel" value=@Model.slot9 ?? string.Empty;>
+
+}
+
+
+
+
+<form asp - action="Create" method="post" enctype="multipart/form-data" id="meuform">
+    <div class="container">
+
+    <div class="container">
+        <!-- Dados Pessoais -->
+        <div id="slot1">
+            <!-- O conteúdo HTML será carregado aqui -->
+        </div>
+   
+
+        <!-- Contato -->
+             <div id="slot2">
+        </div>
+        <!-- Endereço Pessoal -->
+        <div id="slot3">
+        </div>
+
+        <!-- Documentos Pessoais -->
+        <div id="slot4">
+        </div>
+
+
+            <!-- Plano -->
+            <div id="slot5">
+        </div>
+
+
+                <!-- Arquivos -->
+        <div id="slot6">
+        </div>
+
+        <!-- Empresa -->
+        <div id="slot7">
+        </div>
+        <!-- Endereço Empresarial -->
+        <div id="slot8">
+        </div>
+
+        <!-- Login -->
+        <div id="slot9">
+
+        </div>
+
+   
+<div class="form-group">
+    <br />
+                <button type="submit" class="btn btn-primary" url="/FormRegisterViewModels/Create" caminho="~/Views/Users/_IndexPartial.cshtml" idContent="1" id="saveContent">Salvar</button>
+</div>
+    </div>
+</form>
+
+
+    
+</div>
+  
+
+@section Scripts {
+
+
+
+
+    <script>
+        console.log("aaa");
+        $('#meuform').ready(function () {
+            // Seu código aqui
+            console.log("Formulário 'meuform' foi carregado.");
+        });
+
+        $(document).ready(function () {
+
+            console.log("sds");
+            /*
+            var slot1 = @Html.Raw(JsonSerializer.Serialize(Model.slot1));
+            console.log("slote 1 " + slot1);
+            var slot2 = @Html.Raw(JsonSerializer.Serialize(Model.slot2));
+            console.log("slote 2 " + slot2);
+            var slot3 = @Html.Raw(JsonSerializer.Serialize(Model.slot3));
+            console.log("slote 3 " + slot3);
+            var slot4 = @Html.Raw(JsonSerializer.Serialize(Model.slot4));
+            console.log("slote 4 " + slot4);
+
+            var slot5 = @Html.Raw(JsonSerializer.Serialize(Model.slot5));
+            console.log("slote 5 " + slot5);
+
+            var slot6 = @Html.Raw(JsonSerializer.Serialize(Model.slot6));
+            console.log("slote 6 " + slot6);
+
+            var slot7 = @Html.Raw(JsonSerializer.Serialize(Model.slot7));
+
+            console.log("slote 7 " + slot7);
+
+            var slot8 = @Html.Raw(JsonSerializer.Serialize(Model.slot8));
+
+            console.log("slote 8 " + slot8);
+
+            var slot9 = @Html.Raw(JsonSerializer.Serialize(Model.slot9));
+
+            console.log("slote 9 " + slot9);
+
+
+            carregaSlot("slot1", slot1);
+
+            carregaSlot("slot2", slot2);
+            
+             carregaSlot("slot3", slot3);
+
+            carregaSlot("slot4", slot4);
+
+            carregaSlot("slot5", slot5);
+
+            carregaSlot("slot6", slot6);
+
+
+            carregaSlot("slot7", slot7);
+
+
+            carregaSlot("slot8", slot8);
+           
+
+
+            carregaSlot("slot9", slot9);
+
+
+             */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // Captura o evento de submit do formulário
+            $('#meuform').on('submit', function (e) {
+                e.preventDefault(); // Impede o comportamento padrão do submit
+             
+
+                // Obtém os valores dos campos do formulário
+                var nome = $('#NomeCompleto').val() || null;
+                var sexo = $('#Sexo').val() || null;
+                var dataNascimento = $('#DataNascimento').val() || null;
+
+                //contato pessoal
+                var Email = $('#Email').val() || null;
+                var TelefoneCelular = $('#TelefoneCelular').val() || null;
+                var TelefoneResidencial = $('#TelefoneResidencial').val() || null;
+                var OutroTelefone = $('#OutroTelefone').val() || null;
+
+
+                //endereço pessoal
+
+                var Cep = $('#Cep').val() || null;
+                var Estado = $('#Estado').val() || null;
+                var Cidade = $('#Cidade').val() || null;
+                var Logradouro = $('#Logradouro').val() || null;
+                var Numero = $('#Numero').val() || null;
+                var Complemento = $('#Complemento').val() || null;
+
+
+
+
+                // Documentos pessoais
+                var cpf = $('#CPF').val() || null;
+                var rg = $('#RG').val() || null;
+                var dataExpedicaoRG = $('#DataExpedicaoRG').val() || null;
+                var orgaoExpedicaoRG = $('#OrgaoExpedicaoRG').val() || null;
+                var cnh = $('#CNH').val() || null;
+                var dataValidadeCNH = $('#DataValidadeCNH').val() || null;
+                var estadoExpedidorCNH = $('#EstadoExpedidorCNH').val() || null;
+
+                // Arquivos
+                var arquivo1 = $('#Arquivo1').val() || null;
+                var arquivo2 = $('#Arquivo2').val() || null;
+                var arquivo3 = $('#Arquivo3').val() || null;
+                var arquivo4 = $('#Arquivo4').val() || null;
+                var arquivo5 = $('#Arquivo5').val() || null;
+
+                // Dados da Empresa
+                var cpfCnpj = $('#CPFCNPJ').val() || null;
+                var razaoSocial = $('#RazaoSocial').val() || null;
+                var inscricaoEstadual = $('#InscricaoEstadual').val() || null;
+                var telefoneEmpresa = $('#TelefoneEmpresa').val() || null;
+                var emailEmpresa = $('#EmailEmpresa').val() || null;
+                var inscricaoMunicipal = $('#InscricaoMunicipal').val() || null;
+                var certificado = $('#Certificado').val() || null;
+                var planos = $('#Planos').val() || null;
+
+                // Endereço Empresarial
+                var cepEmpresa = $('#CEPEmpresa').val() || null;
+                var estadoEmpresa = $('#EstadoEmpresa').val() || null;
+                var cidadeEmpresa = $('#CidadeEmpresa').val() || null;
+                var logradouroEmpresa = $('#LogradouroEmpresa').val() || null;
+                var numeroEmpresa = $('#NumeroEmpresa').val() || null;
+                var complementoEmpresa = $('#ComplementoEmpresa').val() || null;
+
+
+                //login
+                var LoginEmail = $('#LoginEmail').val() || null;
+                var Senha = $('#Senha').val() || null;
+
+
+
+
+                // Cria um objeto com os dados
+                var data = {
+                    
+                    NomeCompleto: nome,
+                    Sexo: sexo,
+                    DataNascimento: dataNascimento,
+
+                    // Contato pessoal
+                    Email: Email,
+                    TelefoneCelular: TelefoneCelular,
+                    TelefoneResidencial: TelefoneResidencial,
+                    OutroTelefone: OutroTelefone,
+
+                    // Endereço pessoal
+                    Cep: Cep,
+                    Estado: Estado,
+                    Cidade: Cidade,
+                    Logradouro: Logradouro,
+                    Numero: Numero,
+                    Complemento: Complemento,
+
+                    // Documentos pessoais
+                    Cpf: cpf,
+                    Rg: rg,
+                    DataExpedicaoRG: dataExpedicaoRG,
+                    OrgaoExpedicaoRG: orgaoExpedicaoRG,
+                    Cnh: cnh,
+                    DataValidadeCNH: dataValidadeCNH,
+                    EstadoExpedidorCNH: estadoExpedidorCNH,
+
+                    // Arquivos
+                    Arquivo1: arquivo1,
+                    Arquivo2: arquivo2,
+                    Arquivo3: arquivo3,
+                    Arquivo4: arquivo4,
+                    Arquivo5: arquivo5,
+                 
+                    // Dados da Empresa
+                    CPFCNPJ: cpfCnpj,
+                    RazaoSocial: razaoSocial,
+                    InscricaoEstadual: inscricaoEstadual,
+                    TelefoneEmpresa: telefoneEmpresa,
+                    EmailEmpresa: emailEmpresa,
+                    InscricaoMunicipal: inscricaoMunicipal,
+                    Certificado: certificado,
+                      
+                    // Plano
+                    Planos: planos,
+                     
+
+                             // Endereço Empresarial
+                    CEPEmpresa: cepEmpresa,
+                    EstadoEmpresa: estadoEmpresa,
+                    CidadeEmpresa: cidadeEmpresa,
+                    LogradouroEmpresa: logradouroEmpresa,
+                    NumeroEmpresa: numeroEmpresa,
+                    ComplementoEmpresa: complementoEmpresa,
+
+                    //login
+                    LoginEmail:LoginEmail,
+                    Senha: Senha
+                };
+
+                console.log(data);
+
+                console.log("Nome " + data.NomeCompleto);
+                console.log("Email " + data.Email);
+                console.log("Email " + data.Email);
+
+
+                // Envia o formulário via AJAX
+                $.ajax({
+                    url: $(this).attr('action'), // Pega a URL do atributo asp-action
+                    type: 'POST', // Método HTTP
+                    contentType: 'application/json', // Tipo de conteúdo
+                    data: JSON.stringify(data), // Converte os dados para JSON
+                    processData: false, // Não processar os dados
+                    success: function (response) {
+                        console.log('Sucesso:', response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Erro:', error);
+                    }
+                });
+            });
+        });
+
+
+
+
+
+
+
+
+        console.log("carregando view ");
+        /*
+        $.ajax({
+            url: '/FormRegisterViewModels/ConcatenateHtml',
+            type: 'GET',
+
+            success: function (response) {
+                $("#slot9").html(response);
+                console.log("Conteúdo carregado com sucesso.");
+            },
+            error: function (xhr, status, error) {
+                var msg = "Erro ao carregar conteúdo: " + xhr.status + " " + xhr.statusText;
+                $("#" + tabId).html(msg);
+                console.error("Erro ao carregar conteúdo: ", error);
+            }
+        });
+
+        */
+
+
+
+
+       
+    
+
+ 
+
+       
+
+        function carregaSlot(slot,caminho){
+            console.log("Caminho " + caminho)
+            if (caminho != null && caminho != undefined) {
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Função para carregar o conteúdo HTML
+                    function loadHtmlContent(url, containerId) {
+                        fetch(url)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.text();
+                            })
+                            .then(html => {
+                                document.getElementById(containerId).innerHTML = html;
+                            })
+                            .catch(error => {
+                                console.error('Error loading HTML content:', error);
+                            });
+                    }
+
+                    // Carregar o conteúdo HTML do arquivo
+
+
+
+
+                    loadHtmlContent(caminho, slot);
+
+
+
+                });
+
+
+            }else{
+            
+                console.log("Slot nulo");
+            
+            }
+
+        }
+
+
+        
+
+
+
+        // function carregaSlot(slot, caminho) {
+        //     if (caminho) {
+        //         fetch(caminho)
+        //             .then(response => {
+        //                 if (!response.ok) {
+        //                     throw new Error('Network response was not ok');
+        //                 }
+        //                 return response.text();
+        //             })
+        //             .then(html => {
+        //                 document.getElementById(slot).innerHTML = html;
+        //                 console.log(`Conteúdo carregado no slot ${slot}:`, html);
+        //             })
+        //             .catch(error => {
+        //                 console.error('Erro ao carregar o conteúdo HTML:', error);
+        //             });
+        //     } else {
+        //         console.log("Slot ou caminho nulo.");
+        //     }
+        // }
+
+        // // Chame a função para carregar cada parte do formulário
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     carregaSlot('slot9', slot9);
+        //  //   carregaSlot('slot2', '/caminho/para/contato.html');
+        //    // carregaSlot('slot3', '/caminho/para/endereco_pessoal.html');
+        //     // Continue para os outros slots...
+        // });
+
+
+
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     document.getElementById('meuform').addEventListener('submit', function (e) {
+        //         e.preventDefault(); // Evita a submissão imediata
+
+        //         setTimeout(function () {
+        //             var loginEmailElement = document.querySelector("input[name='LoginEmail']");
+        //             var senhaElement = document.querySelector("input[name='Senha']");
+
+        //             console.log("Login Email Element:", loginEmailElement);
+        //             console.log("Senha Element:", senhaElement);
+
+        //             if (!loginEmailElement || !senhaElement) {
+        //                 alert('Por favor, aguarde enquanto todos os campos são carregados.');
+        //             } else {
+        //                 console.log("Email:", loginEmailElement.value);
+        //                 console.log("Senha:", senhaElement.value);
+        //                 e.target.submit(); // Submete o formulário após a verificação
+        //             }
+        //         }, 1000); // Atraso de 1 segundo para garantir o carregamento
+        //     });
+        // });
+
+
+
+
+
+
+
+
+
+
+    </script>
+}

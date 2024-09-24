@@ -1,0 +1,311 @@
+﻿@model Jus_365.Models.FormularioLogin
+
+@{
+    ViewData["Title"] = "Create";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Definição de Formulário para Registro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .container {
+            margin-top: 20px;
+            /* transform: scale(0.65); */
+        }
+
+        #available-items, #selected-items {
+            min-height: 500px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .accordion {
+            margin-bottom: 10px;
+        }
+
+        .accordion-header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .accordion-content {
+            padding: 10px;
+            background-color: #fff;
+            display: none;
+            border-radius: 5px;
+            border: 1px solid #007bff;
+            margin-top: -1px;
+        }
+
+        .accordion-header i {
+            margin-left: 10px;
+        }
+
+        #selected-items .accordion {
+            border: 1px solid #28a745;
+            border-radius: 5px;
+            min-height: 500px;
+        }
+
+        .save-button {
+            margin-top: 20px;
+            float: right;
+        }
+
+        .key-input {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Card para a Definição de Formulário -->
+        <div class="card">
+            <div class="card-header">
+                Definição de Formulário para Registro
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="formDescription">Descrição do Formulário</label>
+                    <input type="text" class="form-control" id="formDescription" placeholder="Digite a descrição do formulário">
+                </div>
+                <div class="form-group">
+                    <label for="formKey">Chave do Formulário</label>
+                    <input type="text" class="form-control key-input" id="formKey" value="1234-5678-ABCD-EFGH" readonly>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Itens Disponíveis
+                    </div>
+                    <div class="card-body" id="available-items">
+                        <div class="accordion" data-id="UserDadosPessoais">
+                            <div class="accordion-header">
+                                <span>Dados Pessoais</span>
+                                <i class="fas fa-arrows-alt"></i>
+                            </div>
+                            <div class="accordion-content">Nome, Sexo, Data de Nascimento</div>
+                        </div>
+                        <div class="accordion" data-id="UserContatoPessoal">
+                            <div class="accordion-header">
+                                <span>Contato Pessoal</span>
+                                <i class="fas fa-arrows-alt"></i>
+                            </div>
+                            <div class="accordion-content">Email, Telefone Celular,Telefone Residencial, Outro Telefone</div>
+                        </div>
+                        <div class="accordion" data-id="EnderecoPessoal">
+                            <div class="accordion-header">
+                                <span>Endereço Pessoal</span>
+                                <i class="fas fa-arrows-alt"></i>
+                            </div>
+                            <div class="accordion-content">Cep, Estado, Cidade,Logradouro, Numero, Complemento</div>
+                        </div>
+                        <div class="accordion" data-id="DocumentosPessoais">
+                            <div class="accordion-header">
+                                <span>Documentos Pessoais</span>
+                                <i class="fas fa-arrows-alt"></i>
+                            </div>
+                            <div class="accordion-content">CPF, RG, Data Expedicao RG, Orgao Expedicao RG, CNH, Data Validade CNH, Estado Expedidor CNH</div>
+                        </div>
+
+
+                        <div class="accordion" data-id="Arquivos">
+                            <div class="accordion-header">
+                                <span>Arquivos</span>
+                                <i class="fas fa-arrows-alt"></i>
+                            </div>
+                            <div class="accordion-content">Arquivo1, Arquivo2, Arquivo3, Arquivo4, Arquivo5</div>
+                        </div>
+
+                        <div class="accordion" data-id="Empresa">
+                            <div class="accordion-header">
+                                <span>Empresa</span>
+                                <i class="fas fa-arrows-alt"></i>
+                            </div>
+                            <div class="accordion-content">CPF/CNPJ, Razão Social, Inscrição Estadual, Telefone Empresa, Email Empresa, Inscrição Municipal, Certificado</div>
+                        </div>
+                        <div class="accordion" data-id="EnderecoEmpresarial">
+                            <div class="accordion-header">
+                                <span>Endereço Empresarial</span>
+                                <i class="fas fa-arrows-alt"></i>
+                            </div>
+                            <div class="accordion-content">CEP Empresa, Estado Empresa, Cidade Empresa, Logradouro Empresa, Numero Empresa, Complemento Empresa </div>
+                        </div>
+                        <div class="accordion" data-id="Login">
+                            <div class="accordion-header">
+                                <span>Login</span>
+                                <i class="fas fa-arrows-alt"></i>
+                            </div>
+                            <div class="accordion-content">Email, Senha </div>
+                        </div>
+
+
+                        <div class="accordion" data-id="Plano">
+                            <div class="accordion-header">
+                                <span>Plano</span>
+                                <i class="fas fa-arrows-alt"></i>
+                            </div>
+                            <div class="accordion-content">Planos disponiveis aos usuários</div>
+                        </div>
+
+                        <!-- Adicione mais acordeões conforme necessário, até 9 -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Itens Selecionados
+                    </div>
+                    <div class="card-body" id="selected-items">
+                        <!-- Os itens arrastados irão aparecer aqui -->
+                    </div>
+                    <button class="btn btn-primary save-button">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $(function () {
+            $(".accordion-header").click(function () {
+                $(this).next(".accordion-content").slideToggle();
+                $(this).toggleClass("active");
+                $(this).find("i").toggleClass("fa-chevron-down fa-chevron-up");
+            });
+
+            $(".accordion").draggable({
+                connectToSortable: "#selected-items",
+                helper: "clone",
+                revert: "invalid"
+            });
+
+            $("#selected-items").sortable({
+                placeholder: "ui-state-highlight",
+                receive: function (event, ui) {
+                    const itemId = ui.helper.data('id');
+                    if ($("#selected-items .accordion[data-id=" + itemId + "]").length > 1) {
+                        ui.helper.remove();
+                    } else {
+                        ui.helper.find(".accordion-content").show();
+                        ui.helper.css({
+                            width: "100%"
+                        });
+                        $(ui.sender).children(`[data-id=${itemId}]`).remove();
+                        ui.helper.removeClass("ui-draggable");
+                        ui.helper.find("i").removeClass("fa-arrows-alt").addClass("fa-times");
+
+                        // Adiciona evento de clique para remover o item
+                        ui.helper.find("i.fa-times").click(function () {
+                            let item = $(this).closest('.accordion').detach();
+                            item.find(".accordion-content").hide();
+                            item.find("i").removeClass("fa-times").addClass("fa-arrows-alt");
+
+                            item.draggable({
+                                connectToSortable: "#selected-items",
+                                helper: "clone",
+                                revert: "invalid"
+                            });
+                        });
+                    }
+                }
+            }).disableSelection();
+
+            $("#available-items").droppable({
+                accept: ".accordion",
+                drop: function (event, ui) {
+                    const itemId = ui.helper.data('id');
+                    if ($("#available-items .accordion[data-id=" + itemId + "]").length > 0) {
+                        ui.helper.remove();
+                    } else {
+                        let item = ui.helper.clone().removeAttr('style');
+                        item.draggable({
+                            connectToSortable: "#selected-items",
+                            helper: "clone",
+                            revert: "invalid"
+                        });
+                        item.find(".accordion-content").hide();
+                        item.find("i").removeClass("fa-times").addClass("fa-arrows-alt");
+                        $(this).append(item);
+                        ui.helper.remove();
+                    }
+                }
+            });
+
+            $(".save-button").click(function () {
+                let selectedItems = [];
+                $("#selected-items .accordion").each(function (index) {
+                    let id = $(this).data("id");
+                    selectedItems.push({ id: id, position: index + 1 });
+
+
+                });
+                console.log(selectedItems);
+                alert(JSON.stringify(selectedItems));
+                var key = document.getElementById("formKey").value;
+                console.log(key); // Isso irá exibir o valor no console
+                var nome = document.getElementById("formDescription").value;
+                console.log(nome);
+                var data = {
+                    nome: nome != null && nome != undefined?nome:"Vazio",
+                    key: key != null && key != undefined ? key : "Vazio",
+                    slot1: selectedItems[0] != null && selectedItems[0] != undefined ? selectedItems[0].id : "Vazio",
+                    slot2: selectedItems[1] != null && selectedItems[1] != undefined ? selectedItems[1].id : "Vazio",
+                    slot3: selectedItems[2] != null && selectedItems[2] != undefined ? selectedItems[2].id : "Vazio",
+                    slot4: selectedItems[3] != null && selectedItems[3] != undefined ? selectedItems[3].id : "Vazio",
+                    slot5: selectedItems[4] != null && selectedItems[4] != undefined ? selectedItems[4].id : "Vazio",
+                    slot6: selectedItems[5] != null && selectedItems[5] != undefined ? selectedItems[5].id : "Vazio",
+                    slot7: selectedItems[6] != null && selectedItems[6] != undefined ? selectedItems[6].id : "Vazio",
+                    slot8: selectedItems[7] != null && selectedItems[7] != undefined ? selectedItems[7].id : "Vazio",
+                    slot9: selectedItems[8] != null && selectedItems[8] != undefined ? selectedItems[8].id : "Vazio"
+
+
+
+
+                };
+
+                // Envia o formulário via AJAX
+                $.ajax({
+                    url: "/FormularioLogin/Create", // Pega a URL do atributo asp-action
+                    type: 'POST', // Método HTTP
+                    contentType: 'application/json', // Tipo de conteúdo
+                    data: JSON.stringify(data), // Converte os dados para JSON
+                    processData: false, // Não processar os dados
+                    success: function (response) {
+                        console.log('Sucesso:', response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Erro:', error);
+                    }
+                });
+
+           
+            });
+        });
+    </script>
+
+</body>
+
+
+

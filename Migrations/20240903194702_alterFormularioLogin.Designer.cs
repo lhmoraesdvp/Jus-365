@@ -4,6 +4,7 @@ using Jus_365.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Jus_365.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240903194702_alterFormularioLogin")]
+    partial class alterFormularioLogin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -415,9 +418,6 @@ namespace Jus_365.Migrations
                     b.Property<string>("ParentId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("icon")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("obs")
                         .HasColumnType("nvarchar(max)");
 
@@ -428,12 +428,6 @@ namespace Jus_365.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("obsInt2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("tipo_no")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("type")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id_Item");

@@ -3,8 +3,10 @@ using Jus_365.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 public class MenuController : Controller
@@ -16,9 +18,9 @@ public class MenuController : Controller
         _context = context;
     }
 
-    public IActionResult Index()
+    public  IActionResult Index()
     {
-        return View();
+        return View( _context.NodeItem.ToList());
     }
 
     [HttpGet]
@@ -30,7 +32,13 @@ public class MenuController : Controller
             {
                 id = item.Id.ToString(), // garantir que o ID é uma string
                 text = item.Name,
-                children = _context.JsTreeMenuItem.Any(child => child.ParentId == item.Id) // se o item tem filhos
+                children = _context.JsTreeMenuItem.Any(child => child.ParentId == item.Id), // se o item tem filhos
+                obs = item.obs,
+                obs2 = item.obs,
+                obsInt = item.obsInt,
+                icon= item.icon,
+                type=item.type,
+                tipo_no = item.tipo_no
             })
             .ToList();
 
@@ -47,7 +55,14 @@ public class MenuController : Controller
             {
                 id = item.Id, // garantir que o ID é uma string
                 text = item.Name,
-                children = _context.JsTreeMenuItem.Any(child => child.ParentId == item.Id) // se o item tem filhos
+                children = _context.JsTreeMenuItem.Any(child => child.ParentId == item.Id), // se o item tem filhos
+                obs=item.obs,
+                obs2 = item.obs2,
+                obsInt= item.obsInt,
+                icon = item.icon,
+                type = item.type,
+                tipo_no = item.tipo_no
+
             })
             .ToList();
 
@@ -101,7 +116,7 @@ public class MenuController : Controller
 
     // Método para carregar o conteúdo HTML para uma nova aba
     [HttpGet]
-    public IActionResult LoadContent()
+    public IActionResult LoadContent(int id)
     {
         // Em um cenário real, você pode carregar o conteúdo com base no ID do banco de dados
         // Aqui, vamos simplesmente retornar um arquivo HTML estático para o exemplo
@@ -113,16 +128,42 @@ public class MenuController : Controller
         //return Content(content, "text/html");
 
         var model =   _context.Empresa.ToList();// Obtenha seu modelo com base no ID
+        NodeItem no = _context.NodeItem.Where(c=>c.Id_No==id).FirstOrDefault();
+        string classe = no.Obs1;
+        string caminho=no.caminho;
 
-        try
+   // Obtenha o tipo do modelo usando reflection
+    Type tipo = Type.GetType(classe);
+
+        if (tipo != null)
         {
-            // Caminho relativo ou nome da partial view
-            return PartialView("~/Views/Empresas/_IndexPartial.cshtml", model);
+            // Obtenha o DbSet correspondente ao tipo usando reflection
+            var dbSet = _context.GetType().GetProperty(tipo.Name)?.GetValue(_context);
+
+            // Verifique se o DbSet foi encontrado
+            if (dbSet != null)
+            {
+                // Chame o método ToList dinamicamente
+                var metodoToList = typeof(Enumerable).GetMethod("ToList").MakeGenericMethod(tipo);
+                var lista = metodoToList.Invoke(null, new[] { dbSet });
+                try
+                {
+                    // Caminho relativo ou nome da partial view
+                    return PartialView(caminho, lista);
+                }
+                catch (Exception ex)
+                {
+                    // Log ou manipule a exceção conforme necessário
+                    return StatusCode(500, "Erro ao carregar a partial view: " + ex.Message);
+                }
+
+            }
+            return PartialView(caminho, model);
+
         }
-        catch (Exception ex)
-        {
-            // Log ou manipule a exceção conforme necessário
-            return StatusCode(500, "Erro ao carregar a partial view: " + ex.Message);
-        }
+        return PartialView(caminho, model);
+
+
+
     }
 }

@@ -24,6 +24,10 @@ namespace Jus_365.Models
 
 
         public string? obsInt2 { get; set; }
+        public string? icon { get; set; }
+        public string? type { get; set; }
+        public string? tipo_no { get; set; }
+
 
         public bool? HasChildren { get; set; }  // Adicione esta linh
         // Outros campos que possam ser necessários

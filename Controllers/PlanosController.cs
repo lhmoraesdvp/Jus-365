@@ -27,7 +27,8 @@ namespace Jus_365.Controllers
         // GET: Planoes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Planos.ToListAsync());
+            var planos = _context.Plano.ToList();
+            return PartialView("_IndexPartial", planos);
         }
 
         // GET: Planoes/Details/5
@@ -38,7 +39,7 @@ namespace Jus_365.Controllers
                 return NotFound();
             }
 
-            var plano = await _context.Planos
+            var plano = await _context.Plano
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (plano == null)
             {
@@ -66,7 +67,7 @@ namespace Jus_365.Controllers
             Role.Name = role.Name;
             Role.Id = role.Id;
             plano.Role = Role;
-            if (/*ModelState.IsValid*/ true)
+            if (true)
             {
 
 
@@ -111,7 +112,7 @@ namespace Jus_365.Controllers
                 return NotFound();
             }
 
-            var plano = await _context.Planos.FindAsync(id);
+            var plano = await _context.Plano.FindAsync(id);
             if (plano == null)
             {
                 return NotFound();
@@ -162,7 +163,7 @@ namespace Jus_365.Controllers
                 return NotFound();
             }
 
-            var plano = await _context.Planos
+            var plano = await _context.Plano
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (plano == null)
             {
@@ -177,7 +178,7 @@ namespace Jus_365.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var plano = await _context.Planos.FindAsync(id);
+            var plano = await _context.Plano.FindAsync(id);
             var role = await _roleManager.FindByNameAsync(plano.Description);
             if (role != null)
             {
@@ -195,7 +196,7 @@ namespace Jus_365.Controllers
                 
             if (plano != null)
             {
-                _context.Planos.Remove(plano);
+                _context.Plano.Remove(plano);
             }
 
             await _context.SaveChangesAsync();
@@ -204,7 +205,8 @@ namespace Jus_365.Controllers
 
         private bool PlanoExists(int id)
         {
-            return _context.Planos.Any(e => e.Id == id);
+            return _context.Plano.Any(e => e.Id == id);
         }
+        
     }
 }

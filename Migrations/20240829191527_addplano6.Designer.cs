@@ -4,6 +4,7 @@ using Jus_365.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Jus_365.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240829191527_addplano6")]
+    partial class addplano6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,236 +166,6 @@ namespace Jus_365.Migrations
                     b.ToTable("Empresa");
                 });
 
-            modelBuilder.Entity("Jus_365.Models.FormRegisterViewModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Arquivo1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Arquivo2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Arquivo3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Arquivo4")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Arquivo5")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CEP")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CEPEmpresa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CNH")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CPF")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CPFCNPJ")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Certificado")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Cidade")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CidadeEmpresa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Complemento")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ComplementoEmpresa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DataExpedicaoRG")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DataNascimento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DataValidadeCNH")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmailEmpresa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Estado")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EstadoEmpresa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EstadoExpedidorCNH")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InscricaoEstadual")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InscricaoMunicipal")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LoginEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Logradouro")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LogradouroEmpresa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NomeCompleto")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Numero")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NumeroEmpresa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrgaoExpedicaoRG")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OutroTelefone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Planos")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RG")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RazaoSocial")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Senha")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Sexo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TelefoneCelular")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TelefoneEmpresa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TelefoneResidencial")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot10")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot11")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot12")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot4")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot5")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot6")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot7")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot8")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot9")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FormRegisterViewModel");
-                });
-
-            modelBuilder.Entity("Jus_365.Models.FormularioLogin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("key")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("slot1")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot2")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot3")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot4")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot5")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot6")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot7")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot8")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.Property<string>("slot9")
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FormularioLogin");
-                });
-
             modelBuilder.Entity("Jus_365.Models.JsTreeMenuItem", b =>
                 {
                     b.Property<int>("Id_Item")
@@ -415,9 +188,6 @@ namespace Jus_365.Migrations
                     b.Property<string>("ParentId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("icon")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("obs")
                         .HasColumnType("nvarchar(max)");
 
@@ -428,12 +198,6 @@ namespace Jus_365.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("obsInt2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("tipo_no")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("type")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id_Item");

@@ -3,6 +3,8 @@
 @inject UserManager<ApplicationUser> UserManager
 @model IEnumerable<UserWithRolesViewModel>
 
+<button url="/Identity/Account/Register" caminho="~/Areas/Identity/Pages/Account/Register.cshtml" idContent="1" id="insertbutton">Cadastrar Novo</button>
+
 <table class="table">
     <thead>
         <tr>
@@ -20,7 +22,9 @@
                 <td>@user.Email</td>
                 <td>@string.Join(", ", user.Roles)</td>
                 <td>
-                    <a href="@Url.Action("EditRoles", "Users", new { id = user.UserId })" class="btn btn-warning">Edit Roles</a>
+                    <button url="/Users/EditRoles" caminho="~/Views/Users/_EditRolesPartial.cshtml" idContent="@user.UserId" id="editContent">Editar Conteúdo</button>
+
+
                 </td>
             </tr>
         }

@@ -13,6 +13,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Conteudo\Arquivos.html" />
+    <Content Remove="wwwroot\Conteudo\DocumentosPessoais.html" />
+    <Content Remove="wwwroot\Conteudo\Empresa.html" />
+    <Content Remove="wwwroot\Conteudo\EnderecoEmpresarial.html" />
+    <Content Remove="wwwroot\Conteudo\EnderecoPessoal.html" />
+    <Content Remove="wwwroot\Conteudo\Login.html" />
+    <Content Remove="wwwroot\Conteudo\Plano.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="jsTree" Version="3.1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.8" />
@@ -29,11 +39,17 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\Conteudo\conteudo1.html" />
+    <None Include="wwwroot\Conteudo\EnderecoEmpresarial.html" />
+    <None Include="wwwroot\Conteudo\Empresa.html" />
+    <None Include="wwwroot\Conteudo\Login.html" />
+    <None Include="wwwroot\Conteudo\Plano.html" />
+    <None Include="wwwroot\Conteudo\Arquivos.html" />
+    <None Include="wwwroot\Conteudo\DocumentosPessoais.html" />
+    <None Include="wwwroot\Conteudo\EnderecoPessoal.html" />
+    <None Include="wwwroot\Conteudo\UserDadosPessoais.html" />
   </ItemGroup>
 
 </Project>
